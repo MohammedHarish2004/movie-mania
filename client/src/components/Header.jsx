@@ -9,7 +9,7 @@ export default function Header() {
     <Navbar  className="bg-black p-3 border-b border-slate-700 ">
       <Navbar.Brand>
         <h1 className="flex gap-1">
-            <span className="flex  items-center gap-0.5 bg-gradient-to-r from-yellow-300 to-yellow-400 hover:bg-gradient-to-bl p-1 px-4 rounded-lg text-xl font-bold text-black"><PiFilmReelFill />Movie</span>
+            <span className="flex  items-center gap-0.5 bg-gradient-to-r from-yellow-300 to-yellow-400 hover:bg-gradient-to-bl p-1 px-2 rounded-lg text-xl font-bold text-black"><PiFilmReelFill />Movie</span>
             <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Mania</span>
         </h1>
       </Navbar.Brand>
