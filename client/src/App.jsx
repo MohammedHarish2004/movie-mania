@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn.jsx'
 import SignUp from './pages/SignUp.jsx'
 import Missing from './pages/Missing.jsx'
 import Header from './components/Header.jsx'
+import { ToastContainer } from 'react-toastify'
 
 export default function App() {
   return (
@@ -19,6 +20,11 @@ export default function App() {
       <Route path='/sign-up' element={<SignUp />}/>
       <Route path='*' element={<Missing />}/>
     </Routes>
+    <ToastContainer 
+        position="top-right"
+        theme="dark"
+        hideProgressBar={false}
+      />
    </BrowserRouter>
   )
 }
