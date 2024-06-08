@@ -1,12 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import avatar from '../assets/avatar.jpg'
 import { Label, Spinner } from 'flowbite-react'
+import { updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/User/userSlice'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function DashboardProfile() {
-    const {currentUser} = useSelector(state=>state.user)
+    const {currentUser,loading,error} = useSelector(state=>state.user)
     const[changeInfo,setChangeInfo] = useState(false)
+    const[formData,setFormData] = useState({})
     const ScrollRef = useRef(null)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if(ScrollRef.current){
@@ -14,6 +19,54 @@ export default function DashboardProfile() {
         }
       }, [changeInfo])
 
+      const handleChange = (e)=>{
+        setFormData({
+            ...formData,
+            [e.target.id]:e.target.value
+        })
+      }
+
+      const handleSubmit = async (e)=>{
+        e.preventDefault()
+
+        try {
+            
+            dispatch(updateUserStart())
+
+            const res = await fetch(`/api/user/update/${currentUser._id}`,{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(formData)
+            })
+
+            const data = await res.json()
+
+            if(data.success === false){
+                dispatch(updateUserFailure(data.message))
+                toast.error(`${data.message}`,{
+                    theme: "dark",
+                    autoClose:1000,
+                  });
+                return
+            }
+
+            dispatch(updateUserSuccess(data))
+            toast.success('Updated successfully',{
+                theme: "dark",
+                autoClose:2000,
+              });
+        } 
+        
+        catch (error) {
+            dispatch(updateUserFailure(error.message))
+            toast.error(`${error.message}`,{
+                theme: "dark",
+                autoClose:2000,
+              });
+        }
+      }
   return (
     <div className='max-w-xl w-full p-7 my-4'>
         <h1 className='text-4xl my-7'>Account Info</h1>
@@ -34,18 +87,26 @@ export default function DashboardProfile() {
             {
                 changeInfo &&
                <>
-                <form className='flex flex-col gap-3' ref={ScrollRef}>
+                <form className='flex flex-col gap-3' ref={ScrollRef} onSubmit={handleSubmit}>
                     <div>
                         <Label className='text-white text-base'>Username</Label>
-                        <input placeholder='username' id='username' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'/>
+                        <input placeholder='username' id='username' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
+                        onChange={handleChange} defaultValue={currentUser.username}/>
                     </div>
                     <div>
                         <Label className='text-white text-base'>Password</Label>
-                        <input placeholder='password' id='password' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'/>
+                        <input placeholder='password' id='password' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
+                        onChange={handleChange}/>
                     </div>
-                    <button className=' bg-yellow-300 w-full hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 mt-3 disabled:opacity-80 uppercase flex justify-center gap-2 items-center' >
+                    <button disabled={loading} className=' bg-yellow-300 w-full hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 mt-3 disabled:opacity-80 uppercase flex justify-center gap-2 items-center' >
+                    {loading ? 
+                    <>
                     <Spinner size='sm' color='gray'/>
-                    <span>Update</span>
+                    <span>Updating</span>
+                    </>
+                    :
+                    'Update'
+                    }
                     </button>
                 </form>
 
