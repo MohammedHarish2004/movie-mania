@@ -6,3 +6,19 @@ body{
   background: rgb(7, 9, 15);
   color:rgb(229 ,231 ,235)
 }
+
+.bg-gray-50{
+  background-color:rgb(0, 0, 0);
+}
+
+.text-gray-900{
+  color:rgb(229 ,231 ,235) !important;
+}
+
+.text-gray-900:hover{
+  color:rgb(0, 0, 0) !important;
+}
+
+.bg-gray-100{
+  background-color: rgb(87, 87, 87) !important;
+}
