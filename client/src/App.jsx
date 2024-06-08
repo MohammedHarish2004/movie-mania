@@ -8,6 +8,7 @@ import Missing from './pages/Missing.jsx'
 import Header from './components/Header.jsx'
 import { ToastContainer } from 'react-toastify'
 import PrivateRoute from './components/PrivateRoute.jsx'
+import WatchLater from './pages/WatchLater.jsx'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
       <Route path='/movies' element={<Movies />}/>
       <Route path='/sign-in' element={<SignIn />}/>
       <Route path='/sign-up' element={<SignUp />}/>
+      <Route path='/watch-later' element={<WatchLater />}/>
       <Route element={<PrivateRoute />}>
       <Route path='/dashboard' element={<Dashboard />}/>
       </Route>

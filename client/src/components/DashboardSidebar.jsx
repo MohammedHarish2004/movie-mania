@@ -5,11 +5,14 @@ import Swal from 'sweetalert2';
 import {useNavigate} from 'react-router-dom'
 import { signOutSuccess } from '../redux/User/userSlice';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function DashboardSidebar() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  
+
   const handleLogout = ()=>{
     Swal.fire({
       title: 'Are you sure?',
@@ -30,6 +33,10 @@ export default function DashboardSidebar() {
           return
         }
         dispatch(signOutSuccess(data))
+        toast.success('Logged out successfully',{
+          theme: "dark",
+          autoClose:1500,
+        });
         navigate('/sign-in')
       }
     })
