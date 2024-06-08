@@ -26,7 +26,7 @@ export default function DashboardProfile() {
         })
       }
 
-      const handleSubmit = async (e)=>{
+      const handleUserSubmit = async (e)=>{
         e.preventDefault()
 
         try {
@@ -55,7 +55,7 @@ export default function DashboardProfile() {
             dispatch(updateUserSuccess(data))
             toast.success('Updated successfully',{
                 theme: "dark",
-                autoClose:2000,
+                autoClose:1200,
               });
         } 
         
@@ -63,10 +63,12 @@ export default function DashboardProfile() {
             dispatch(updateUserFailure(error.message))
             toast.error(`${error.message}`,{
                 theme: "dark",
-                autoClose:2000,
+                autoClose:1500,
               });
         }
       }
+
+     
   return (
     <div className='max-w-xl w-full p-7 my-4'>
         <h1 className='text-4xl my-7'>Account Info</h1>
@@ -87,7 +89,7 @@ export default function DashboardProfile() {
             {
                 changeInfo &&
                <>
-                <form className='flex flex-col gap-3' ref={ScrollRef} onSubmit={handleSubmit}>
+                <form className='flex flex-col gap-3' ref={ScrollRef} onSubmit={handleUserSubmit}>
                     <div>
                         <Label className='text-white text-base'>Username</Label>
                         <input placeholder='username' id='username' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'

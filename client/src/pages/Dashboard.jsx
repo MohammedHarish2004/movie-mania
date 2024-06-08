@@ -12,7 +12,7 @@ export default function Dashboard() {
     const urlParams = new URLSearchParams(location.search)
     const tabFromUrl = urlParams.get('tab')
     setTab(tabFromUrl)
-  },[])
+  },[location.search])
 
   return (
     <div className='flex flex-col md:flex-row min-h-screen'>
