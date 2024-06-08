@@ -11,8 +11,20 @@ body{
   background-color:rgb(0, 0, 0);
 }
 
-.text-gray-900{
-  color:rgb(229 ,231 ,235) !important;
+.text-gray-900,.text-gray-700{
+  color:rgb(201, 201, 201) !important;
+}
+
+.text-gray-900:hover,.text-gray-700:hover{
+  color:rgb(0, 0, 0) !important;
+}
+
+.text-gray-500{
+  color:rgb(163, 163, 163) !important;
+}
+
+.text-gray-500:hover{
+color:black !important
 }
 
 .text-gray-900:hover{
@@ -20,5 +32,5 @@ body{
 }
 
 .bg-gray-100{
-  background-color: rgb(87, 87, 87) !important;
+  background-color: rgb(58, 58, 58) !important;
 }
