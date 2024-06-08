@@ -3,13 +3,16 @@ import React, { useState } from 'react'
 import { PiFilmReelFill } from 'react-icons/pi'
 import { Link, useNavigate } from 'react-router-dom'
 import bg from '../assets/stream.jpg'
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux'
+import { signInFailure, signInStart, signInSuccess } from '../redux/User/userSlice'
 
 export default function SignIn() {
 
   const [loading,setLoading] = useState(false)
   const[formData,setFormData] = useState({})
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   
   const handleChange = (e)=>{
@@ -27,6 +30,8 @@ export default function SignIn() {
       try {
         setLoading(true)
 
+        dispatch(signInStart())
+
         const res = await fetch('/api/auth/login',{
           method:"POST",
           headers:{
@@ -38,10 +43,11 @@ export default function SignIn() {
         const data = await res.json()
         if(data.success === false){
           toast.warning(data.message,{ autoClose: 1500 });
+          dispatch(signInFailure(data.message))
           setLoading(false)
           return
         }
-        setLoading(false)
+        dispatch(signInSuccess(data))
         toast.success('Logged In successfully',{
           theme: "dark",
           autoClose:1000,
@@ -51,6 +57,8 @@ export default function SignIn() {
       } 
       catch (error) {
         toast.warning(error.message,{ autoClose: 1500 });
+        dispatch(signInFailure(data.message))
+        setLoading(false)
       }
     }  
   return (
@@ -82,7 +90,7 @@ export default function SignIn() {
           loading ? <span><Spinner size='sm' color='gray'/> Loading</span> : 'Login'
          }</button>
         </form>
-        <div className='flex justify-between mt-7'>
+        <div className='flex gap-3 mt-7'>
           <span className='font-medium'>Don't have an account ?</span>
           <Link to='/sign-up' className='text-yellow-300 font-medium hover:underline'>
             Register

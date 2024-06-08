@@ -83,7 +83,7 @@ export default function SignIn() {
           loading ? <span><Spinner size='sm' color='gray'/> Loading</span> : 'Register'
          }</button>
         </form>
-        <div className='flex justify-between mt-7'>
+        <div className='flex gap-3 mt-7'>
           <span className='font-medium'>Already have an account ?</span>
           <Link to='/sign-in' className='text-yellow-300 font-medium hover:underline'>
             Login
