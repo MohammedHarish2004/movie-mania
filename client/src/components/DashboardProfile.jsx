@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function DashboardProfile() {
-    const {currentUser,loading,error} = useSelector(state=>state.user)
+    const {currentUser,loading} = useSelector(state=>state.user)
     const[changeInfo,setChangeInfo] = useState(false)
     const[formData,setFormData] = useState({})
     const ScrollRef = useRef(null)

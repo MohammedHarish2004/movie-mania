@@ -1,12 +1,15 @@
 import { Label } from 'flowbite-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function DashboardGenre() {
 
     const [formData,setFormData] = useState('')
-    
+    const {currentUser} = useSelector(state=>state.user)
+    const [genres,setGenres] = useState()
+
     const handleSubmit = async(e)=>{
 
         e.preventDefault()
@@ -34,6 +37,21 @@ export default function DashboardGenre() {
         toast.warning(error.message,{ autoClose: 1500 })
         }
     }
+
+    useEffect(()=>{
+
+        const fetchGenres = async()=>{
+            const res = await fetch('/api/genre/getGenre')
+            const data = await res.json()
+            if(res.ok){
+                setGenres(data)
+            }
+        }
+
+        if(currentUser.isAdmin){
+            fetchGenres()
+        }
+    },[])
   return (
     <div className='max-w-4xl w-full p-5 flex flex-col gap-10'>
 
@@ -80,28 +98,17 @@ export default function DashboardGenre() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Action</td>
-                        <td>1/11/1111</td>
+                   {genres && 
+                   genres.map((genre,index)=>(
+                    <tr key={genre._id}>
+                        <td>{index + 1}</td>
+                        <td>{genre.name}</td>
+                        <td>{new Date(genre.createdAt).toLocaleDateString()}</td>
                         <td><button className='text-green-400 '>Edit</button></td>
                         <td><button className='text-red-600 '>Delete</button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Action</td>
-                        <td>1/11/1111</td>
-                        <td><button className='text-green-400 '>Edit</button></td>
-                        <td><button className='text-red-600 '>Delete</button></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Action</td>
-                        <td>1/11/1111</td>
-                        <td><button className='text-green-400 '>Edit</button></td>
-                        <td><button className='text-red-600 '>Delete</button></td>
-                    </tr>
-                    
+                    </tr> 
+                   ))
+                   }
                 </tbody>
             </table>
         </div>

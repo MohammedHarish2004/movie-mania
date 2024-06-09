@@ -18,3 +18,20 @@ export const createGenre = async (req,res,next)=>{
         next(error)
     }
 }
+
+export const getGenre = async(req,res,next)=>{
+
+    if(!req.user.isAdmin) return next(errorHandler(401,'Only Admin allowed'))
+
+       try {
+        
+        const genres = await Genre.find()
+        res.status(200).json(genres)
+
+       } 
+       
+       catch (error) {
+        next(error)
+       }
+
+}
