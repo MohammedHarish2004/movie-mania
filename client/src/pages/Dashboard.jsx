@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import DashboardSidebar from '../components/DashboardSidebar'
 import { useLocation } from 'react-router-dom'
 import DashboardProfile from '../components/DashboardProfile'
+import DashboardGenre from '../components/DashboardGenre'
 
 export default function Dashboard() {
 
@@ -23,6 +24,7 @@ export default function Dashboard() {
     {/* Profile */}
     { tab === 'profile' &&  <DashboardProfile />}
 
+    {tab === 'genre' && <DashboardGenre />}
     </div>
   )
 }

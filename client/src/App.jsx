@@ -8,6 +8,7 @@ import Missing from './pages/Missing.jsx'
 import Header from './components/Header.jsx'
 import { ToastContainer } from 'react-toastify'
 import PrivateRoute from './components/PrivateRoute.jsx'
+import AdminPrivateRoute from './components/AdminPrivateRoute.jsx'
 import WatchLater from './pages/WatchLater.jsx'
 import FooterCom from './components/FooterComp.jsx'
 
@@ -22,7 +23,10 @@ export default function App() {
       <Route path='/sign-up' element={<SignUp />}/>
       <Route path='/watch-later' element={<WatchLater />}/>
       <Route element={<PrivateRoute />}>
-      <Route path='/dashboard' element={<Dashboard />}/>
+        <Route path='/dashboard' element={<Dashboard />}/>
+      </Route>
+      <Route element={<AdminPrivateRoute />}>
+        
       </Route>
       <Route path='*' element={<Missing />}/>
     </Routes>

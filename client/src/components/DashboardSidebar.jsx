@@ -1,6 +1,7 @@
 import { Sidebar } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { FaSignOutAlt, FaTrashAlt, FaUser } from "react-icons/fa";
+import { BiSolidCategory } from "react-icons/bi";
 import Swal from 'sweetalert2';
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutSuccess } from '../redux/User/userSlice';
@@ -10,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function DashboardSidebar() {
 
-  const path = useLocation()
+  const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const {currentUser} = useSelector(state=>state.user)
@@ -110,8 +111,6 @@ export default function DashboardSidebar() {
     })
   }
   
-
-  
   return (
     <Sidebar color='light' className='w-full md:w-56 text-white hover:text-black ' >
       <Sidebar.Items>
@@ -119,6 +118,12 @@ export default function DashboardSidebar() {
           <Sidebar.Item className='font-medium cursor-pointer' as={Link} to={'/dashboard?tab=profile'} active={tab === 'profile'} label={currentUser.isAdmin ? 'Admin' : 'User'} labelColor="light" icon={FaUser}>
             <span className='font-medium cursor-pointer'>Account Info</span>
           </Sidebar.Item>
+          {
+            currentUser.isAdmin && 
+            <Sidebar.Item className='font-medium cursor-pointer' as={Link} to={'/dashboard?tab=genre'} active={tab === 'genre'}  labelColor="light" icon={BiSolidCategory}>
+              <span className='font-medium cursor-pointer'>Manage Genre</span>
+            </Sidebar.Item>
+          }
           <Sidebar.Item className='font-medium cursor-pointer' icon={FaTrashAlt} onClick={handleUserDelete}>
             <button  className='font-medium'>Delete Account</button>
           </Sidebar.Item>
