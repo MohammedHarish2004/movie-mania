@@ -1,5 +1,5 @@
 import { Label } from 'flowbite-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,11 +7,12 @@ import Swal from 'sweetalert2';
 
 export default function DashboardGenre() {
 
-    const [formData,setFormData] = useState([])
+    const [formData,setFormData] = useState({name:'',id:''})
     const {currentUser} = useSelector(state=>state.user)
     const [genres,setGenres] = useState()
-
-
+    const ScrollRef = useRef(null)
+    
+    // Get Genre
     const fetchGenres = async()=>{
         const res = await fetch('/api/genre/getGenre')
         const data = await res.json()
@@ -26,39 +27,8 @@ export default function DashboardGenre() {
             fetchGenres()
         }
     },[])
-
-    const handleSubmit = async(e)=>{
-
-        e.preventDefault()
-
-        if(!formData.name?.trim()) return toast.warning('Name required',{ autoClose: 1500 })
-        try {
-            
-            const res = await fetch('/api/genre/create',{
-                method:"POST",
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify(formData)
-            })
-
-            const data = await res.json()
-            if(data.success == false){
-                toast.warning(data.message,{ autoClose: 1500 })
-                return
-            }
-            toast.success('Genre created successfully',{ autoClose: 1000 })
-            setFormData({name:''})
-
-                fetchGenres()
-        } 
-        catch (error) {
-        toast.warning(error.message,{ autoClose: 1500 })
-        }
-    }
-
     
-
+    // Delete Genre
     const handleDelete = async(genreId,genreName)=>{
         Swal.fire({
             title: 'Are you sure?',
@@ -73,49 +43,103 @@ export default function DashboardGenre() {
       
             if(result.isConfirmed){
 
-                const res = await fetch(`/api/genre/deleteGenre/${genreId}`,{
-                    method:"DELETE"
-                })
+                try {
+                    
+                    const res = await fetch(`/api/genre/deleteGenre/${genreId}`,{
+                        method:"DELETE"
+                    })
+    
+                    const data = await res.json()
+    
+                    if(data.success === false){
+                        toast.error(data.message,{ autoClose: 1000 })
+                    }
 
-                const data = await res.json
+                    if(res.ok){
+                        toast.success('Genre deleted successfully',{ autoClose: 1000 })
+                        setGenres(prev=>prev.filter((genre)=>genre._id !== genreId))
+                    }
 
-                if(res.ok){
-                    toast.success('Genre deleted successfully',{ autoClose: 1000 })
-                    setGenres(prev=>prev.filter((genre)=>genre._id !== genreId))
+                } 
+                catch (error) {
+                    toast.error(error.message,{ autoClose: 1000 })
                 }
             }
         })
     }
+
+    // Edit Genre 
+
+    const handleEdit = (genreId,genreName) =>{
+        setFormData({id:genreId,name:genreName})
+    }
+
+    // Submit Genre 
+    const handleSubmit = async(e)=>{
+
+        e.preventDefault()
+
+        if(!formData.name?.trim()) return toast.warning('Name required',{ autoClose: 1500 })
+        try {
+            
+            const res = await fetch(
+                formData.id ?
+                `/api/genre/editGenre/${formData.id}`
+                :'/api/genre/createGenre',{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({name:formData.name})
+            })
+
+            const data = await res.json()
+            if(data.success == false){
+                toast.warning(data.message,{ autoClose: 1500 })
+                return
+            }
+            toast.success(formData.id ? 'Genre updated successfully' : 'Genre created successfully',{ autoClose: 1000 })
+            setFormData({name:'',id:''})
+            fetchGenres()
+        } 
+        catch (error) {
+        toast.error('Something went wrong',{ autoClose: 1500 })
+        }
+    }
+    
+    
   return (
     <div className='max-w-4xl w-full p-7 flex flex-col gap-10'>
 
         {/* Genre Creation */}
-        <div>
+        <div >
             <h1 className='text-3xl my-7'>Create Genre</h1>
-            <form onSubmit={handleSubmit} className='flex flex-col lg:flex-row lg:gap-4 lg:justify-center lg:items-center '>
-                <div className='flex-1 flex flex-col gap-1'>
-                    <Label className='text-white text-base'>Genre Name</Label>
-                    <input onChange={(e)=>setFormData({
-                        ...formData,[e.target.id]:e.target.value
-                    })} 
+            <form  onSubmit={handleSubmit} className='flex flex-col lg:flex-row lg:gap-4 lg:justify-center lg:items-center '>
+            <div className='flex-1 flex flex-col gap-1'>
+                <Label className='text-white text-base'>Genre Name</Label>
+                <input
+                    onChange={(e) =>
+                        setFormData({
+                            ...formData,
+                            [e.target.id]: e.target.value,
+                        })
+                    }
+                    ref={ScrollRef}
                     placeholder='genre name'
-                    value={formData.name} 
-                    id='name' 
-                    className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'/>
-                </div>
-                <div className='flex-1'>
-                    <button className='bg-yellow-300 w-auto px-7 lg:w-72 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 disabled:opacity-80 mt-6 uppercase flex justify-center gap-2 items-center' >
-                    {/* {loading ? 
-                    <> */}
-                    {/* <Spinner size='sm' color='gray'/>
-                    <span>Updating</span>
-                    </>
-                    : */}
-                    <span>Create Genre</span>
-                    {/* } */}
-                    </button>
-                </div>
-            </form>
+                    value={formData.name}
+                    id='name'
+                    className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
+                />
+            </div>
+            <div className='flex-1'>
+                <button
+                    type='submit'
+                    className='bg-yellow-300 w-auto px-7 lg:w-72 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 disabled:opacity-80 mt-6 uppercase flex justify-center gap-2 items-center'
+                >
+                    <span>{formData.id ? 'Update Genre' : 'Create Genre'}</span>
+                </button>
+            </div>
+        </form>
         </div>
 
         {/* Genre list */}
@@ -132,17 +156,23 @@ export default function DashboardGenre() {
                     </tr>
                 </thead>
                 <tbody>
-                   {genres && 
-                   genres.map((genre,index)=>(
-                    <tr key={genre._id}>
-                        <td>{index + 1}</td>
-                        <td>{genre.name}</td>
-                        <td>{new Date(genre.createdAt).toLocaleDateString()}</td>
-                        <td><button className='text-green-400 '>Edit</button></td>
-                        <td><button onClick={()=>handleDelete(genre._id,genre.name)} className='text-red-600 '>Delete</button></td>
-                    </tr> 
-                   ))
-                   }
+                {genres && genres.length > 0 ? (
+                    genres.map((genre, index) => (
+                        <tr key={genre._id}>
+                            <td>{index + 1}</td>
+                            <td>{genre.name}</td>
+                            <td>{new Date(genre.createdAt).toLocaleDateString()}</td>
+                            <td><button onClick={() => {handleEdit(genre._id,genre.name);ScrollRef.current.focus()}} className='text-green-400'>Edit</button></td>
+                            <td>
+                                <button onClick={() => handleDelete(genre._id, genre.name)} className='text-red-600'>Delete</button>
+                            </td>
+                        </tr>
+                    ))
+                    ) : (
+                        <tr>
+                            <td colSpan="5" align="center">No genres created yet</td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
         </div>

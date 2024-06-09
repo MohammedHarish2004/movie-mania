@@ -10,5 +10,6 @@ const genreSchema = new mongoose.Schema({
 
 },{timestamps:true})
 
-export const Genre = mongoose.model('Genre',genreSchema)
+const Genre = mongoose.model('Genre',genreSchema)
+
 export default Genre
