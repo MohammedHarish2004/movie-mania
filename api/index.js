@@ -3,6 +3,8 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import authRouter from './routes/auth.route.js'
 import userRouter from './routes/user.route.js'
+import genreRouter from './routes/genre.route.js'
+
 import cookieParser from 'cookie-parser'
 
 dotenv.config()
@@ -25,6 +27,7 @@ app.use(cookieParser())
 
 app.use('/api/auth',authRouter)
 app.use('/api/user',userRouter)
+app.use('/api/genre',genreRouter)
 
 app.use((err,req,res,next)=>{
     const statusCode = err.statusCode

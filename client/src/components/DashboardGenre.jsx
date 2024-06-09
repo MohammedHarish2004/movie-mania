@@ -1,17 +1,55 @@
 import { Label } from 'flowbite-react'
-import React from 'react'
+import React, { useState } from 'react'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function DashboardGenre() {
+
+    const [formData,setFormData] = useState('')
+    
+    const handleSubmit = async(e)=>{
+
+        e.preventDefault()
+
+        if(!formData.name?.trim()) return toast.warning('Name required',{ autoClose: 1500 })
+        try {
+            
+            const res = await fetch('/api/genre/create',{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(formData)
+            })
+
+            const data = await res.json()
+            if(data.success == false){
+                toast.warning(data.message,{ autoClose: 1500 })
+                return
+            }
+            toast.success('Genre created successfully',{ autoClose: 1000 })
+            setFormData({name:''})
+        } 
+        catch (error) {
+        toast.warning(error.message,{ autoClose: 1500 })
+        }
+    }
   return (
     <div className='max-w-4xl w-full p-5 flex flex-col gap-10'>
 
         {/* Genre Creation */}
         <div>
             <h1 className='text-3xl my-7'>Create Genre</h1>
-            <form className='flex flex-col lg:flex-row lg:gap-4 lg:justify-center lg:items-center '>
+            <form onSubmit={handleSubmit} className='flex flex-col lg:flex-row lg:gap-4 lg:justify-center lg:items-center '>
                 <div className='flex-1 flex flex-col gap-1'>
                     <Label className='text-white text-base'>Genre Name</Label>
-                    <input placeholder='genre name' id='genre' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'/>
+                    <input onChange={(e)=>setFormData({
+                        ...formData,[e.target.id]:e.target.value
+                    })} 
+                    placeholder='genre name'
+                    value={formData.name} 
+                    id='name' 
+                    className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'/>
                 </div>
                 <div className='flex-1'>
                     <button className='bg-yellow-300 w-auto px-7 lg:w-72 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 disabled:opacity-80 mt-6 uppercase flex justify-center gap-2 items-center' >

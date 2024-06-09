@@ -62,7 +62,7 @@ export default function Header() {
        {
         currentUser ?
         (
-        <Dropdown inline arrowIcon={false} label={<Avatar img={avatar}/>} className="bg-gray-800 hover:text-black p-1">
+        <Dropdown inline arrowIcon={false} label={<Avatar img={avatar}/>} className="bg-gray-800 hover:text-black p-1 z-20">
           <Dropdown.Header className="text-white font-medium">
             User : {currentUser.username}
           </Dropdown.Header>
