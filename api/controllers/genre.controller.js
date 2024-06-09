@@ -24,14 +24,23 @@ export const getGenre = async(req,res,next)=>{
     if(!req.user.isAdmin) return next(errorHandler(401,'Only Admin allowed'))
 
        try {
-        
         const genres = await Genre.find()
         res.status(200).json(genres)
-
        } 
-       
        catch (error) {
         next(error)
        }
+}
 
+export const deleteGenre = async(req,res,next)=>{
+
+    if(!req.user.isAdmin) return next(errorHandler(401,'Only Admin allowed'))
+
+       try {
+        await Genre.findByIdAndDelete(req.params.id)
+        res.status(200).json("Genre Deleted")
+       } 
+       catch (error) {
+        next(error)
+       }
 }
