@@ -9,6 +9,7 @@ import Header from './components/Header.jsx'
 import { ToastContainer } from 'react-toastify'
 import PrivateRoute from './components/PrivateRoute.jsx'
 import WatchLater from './pages/WatchLater.jsx'
+import FooterCom from './components/FooterComp.jsx'
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
       </Route>
       <Route path='*' element={<Missing />}/>
     </Routes>
+    <FooterCom />
     <ToastContainer 
         position="top-right"
         theme="dark"

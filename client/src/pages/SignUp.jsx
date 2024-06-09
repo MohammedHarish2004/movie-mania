@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import bg from '../assets/stream.jpg'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import OAuth from '../components/OAuth'
 
 export default function SignIn() {
 
@@ -22,7 +23,7 @@ export default function SignIn() {
     const handleSubmit = async (e)=>{
       e.preventDefault()
 
-      if(!formData.username?.trim() || !formData.password?.trim()) 
+      if(!formData.username?.trim() || !formData.password?.trim() || !formData.email?.trim()) 
         return toast.warning('All the fields are required',{ autoClose: 1500 });
 
       try {
@@ -56,7 +57,7 @@ export default function SignIn() {
     }  
   return (
 
-    <div className="max-w-lg lg:max-w-6xl mx-auto p-3 mt-8 lg:mt-16 xl:mt-20 lg:flex items-center justify-center lg:gap-16">
+    <div className="max-w-lg lg:max-w-6xl mx-auto p-3 mt-8 lg:mt-16 xl:mt-2 lg:flex items-center justify-center lg:gap-16">
     
     {/* Left */}
       <div className='flex-none  p-3'>
@@ -76,12 +77,18 @@ export default function SignIn() {
             <input placeholder='username' id='username' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300' onChange={handleChange}/>
          </div>
          <div>
+            <Label className='text-white text-base'>Email</Label>
+            <input placeholder='email' id='email' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300' onChange={handleChange}/>
+         </div>
+         <div>
             <Label className='text-white text-base'>Password</Label>
             <input  placeholder='password' id='password' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300' onChange={handleChange}/>
          </div>
          <button disabled={loading} className=' bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 mt-3 disabled:opacity-80 uppercase' >{
           loading ? <span><Spinner size='sm' color='gray'/> Loading</span> : 'Register'
          }</button>
+         <OAuth />
+
         </form>
         <div className='flex gap-3 mt-7'>
           <span className='font-medium'>Already have an account ?</span>

@@ -96,6 +96,11 @@ export default function DashboardProfile() {
                         onChange={handleChange} defaultValue={currentUser.username}/>
                     </div>
                     <div>
+                        <Label className='text-white text-base'>Email</Label>
+                        <input placeholder='email' id='email' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
+                        onChange={handleChange} defaultValue={currentUser.email}/>
+                    </div>
+                    <div>
                         <Label className='text-white text-base'>Password</Label>
                         <input placeholder='password' id='password' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
                         onChange={handleChange}/>

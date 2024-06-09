@@ -116,13 +116,13 @@ export default function DashboardSidebar() {
     <Sidebar color='light' className='w-full md:w-56 text-white hover:text-black ' >
       <Sidebar.Items>
         <Sidebar.ItemGroup>
-          <Sidebar.Item as={Link} to={'/dashboard?tab=profile'} active={tab === 'profile'} label={currentUser.isAdmin ? 'Admin' : 'User'} labelColor="light" icon={FaUser}>
+          <Sidebar.Item className='font-medium cursor-pointer' as={Link} to={'/dashboard?tab=profile'} active={tab === 'profile'} label={currentUser.isAdmin ? 'Admin' : 'User'} labelColor="light" icon={FaUser}>
             <span className='font-medium cursor-pointer'>Account Info</span>
           </Sidebar.Item>
-          <Sidebar.Item icon={FaTrashAlt} onClick={handleUserDelete}>
+          <Sidebar.Item className='font-medium cursor-pointer' icon={FaTrashAlt} onClick={handleUserDelete}>
             <button  className='font-medium'>Delete Account</button>
           </Sidebar.Item>
-          <Sidebar.Item icon={FaSignOutAlt} onClick={handleLogout}>
+          <Sidebar.Item className='font-medium cursor-pointer' icon={FaSignOutAlt} onClick={handleLogout}>
             <button  className='font-medium'>Logout</button>
           </Sidebar.Item>
         </Sidebar.ItemGroup>

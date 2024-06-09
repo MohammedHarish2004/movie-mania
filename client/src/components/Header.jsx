@@ -70,8 +70,8 @@ export default function Header() {
               Account Info
           </Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item as={'div'} className="text-white hover:text-black" icon={FaSignOutAlt}>
-            <span onClick={handleLogout} >
+          <Dropdown.Item as={'div'} className="text-white hover:text-black" icon={FaSignOutAlt}  onClick={handleLogout}>
+            <span >
               Logout
             </span>
           </Dropdown.Item>

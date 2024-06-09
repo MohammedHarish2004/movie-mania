@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux'
 import { signInFailure, signInStart, signInSuccess } from '../redux/User/userSlice'
+import OAuth from '../components/OAuth'
 
 export default function SignIn() {
 
@@ -63,7 +64,7 @@ export default function SignIn() {
     }  
   return (
 
-    <div className="max-w-lg lg:max-w-6xl mx-auto p-3 mt-8 lg:mt-16 xl:mt-20 lg:flex items-center justify-center lg:gap-16">
+    <div className="max-w-lg lg:max-w-6xl mx-auto p-3 mt-8 lg:mt-16 xl:mt-10 lg:flex items-center justify-center lg:gap-16">
     
     {/* Left */}
       <div className='flex-none  p-3'>
@@ -89,6 +90,7 @@ export default function SignIn() {
          <button disabled={loading} className=' bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 mt-3 disabled:opacity-80 uppercase' >{
           loading ? <span><Spinner size='sm' color='gray'/> Loading</span> : 'Login'
          }</button>
+         <OAuth />
         </form>
         <div className='flex gap-3 mt-7'>
           <span className='font-medium'>Don't have an account ?</span>
