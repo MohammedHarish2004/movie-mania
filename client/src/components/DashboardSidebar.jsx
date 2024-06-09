@@ -1,7 +1,7 @@
 import { Sidebar } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { FaSignOutAlt, FaTrashAlt, FaUser } from "react-icons/fa";
-import { BiSolidCategory } from "react-icons/bi";
+import { BiMovie, BiSolidCategory } from "react-icons/bi";
 import Swal from 'sweetalert2';
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutSuccess } from '../redux/User/userSlice';
@@ -122,6 +122,12 @@ export default function DashboardSidebar() {
             currentUser.isAdmin && 
             <Sidebar.Item className='font-medium cursor-pointer' as={Link} to={'/dashboard?tab=genre'} active={tab === 'genre'}  labelColor="light" icon={BiSolidCategory}>
               <span className='font-medium cursor-pointer'>Manage Genre</span>
+            </Sidebar.Item>
+          }
+          {
+            currentUser.isAdmin && 
+            <Sidebar.Item className='font-medium cursor-pointer' as={Link} to={'/dashboard?tab=create-movie'} active={tab === 'create-movie'}  labelColor="light" icon={BiMovie}>
+              <span className='font-medium cursor-pointer'>Create Movie</span>
             </Sidebar.Item>
           }
           <Sidebar.Item className='font-medium cursor-pointer' icon={FaTrashAlt} onClick={handleUserDelete}>

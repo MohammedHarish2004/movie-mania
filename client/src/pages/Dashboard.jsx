@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import DashboardProfile from '../components/DashboardProfile'
 import DashboardGenre from '../components/DashboardGenre'
 import { useSelector } from 'react-redux'
+import CreateMovie from './CreateMovie'
 
 export default function Dashboard() {
 
@@ -26,7 +27,11 @@ export default function Dashboard() {
     {/* Profile */}
     { tab === 'profile' &&  <DashboardProfile />}
 
+    {/* Genre */}
     {currentUser.isAdmin && tab === 'genre' && <DashboardGenre />}
+
+    {/* Movie */}
+    {currentUser.isAdmin && tab === 'create-movie' && <CreateMovie />}
     </div>
   )
 }
