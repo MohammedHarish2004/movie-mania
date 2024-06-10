@@ -5,6 +5,7 @@ import DashboardProfile from '../components/DashboardProfile'
 import DashboardGenre from '../components/DashboardGenre'
 import { useSelector } from 'react-redux'
 import CreateMovie from './CreateMovie'
+import DashboardMovieList from '../components/DashboardMovieList'
 
 export default function Dashboard() {
 
@@ -32,6 +33,9 @@ export default function Dashboard() {
 
     {/* Movie */}
     {currentUser.isAdmin && tab === 'create-movie' && <CreateMovie />}
+    
+    {/* Movie list  */}
+    {currentUser.isAdmin && tab === 'movie-list' && <DashboardMovieList />}
     </div>
   )
 }

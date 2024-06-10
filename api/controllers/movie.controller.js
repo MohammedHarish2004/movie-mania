@@ -17,3 +17,18 @@ export const createMovie = async(req,res,next)=>{
         next(error)    
     }
 }
+
+export const getMovie = async(req,res,next)=>{
+    
+    if(!req.user.isAdmin) return next(errorHandler(401,'Only admin allowed'))
+    
+    try {
+        const movie = await Movie.find()
+        res.status(200).json(movie)
+
+    } 
+    
+    catch (error) {
+        next(error)    
+    }
+}

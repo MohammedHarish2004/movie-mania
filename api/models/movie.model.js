@@ -8,7 +8,6 @@ const movieSchema = new mongoose.Schema({
     image:{
         type:String,
         required:true,
-        default:'https://www.reelviews.net/resources/img/default_poster.jpg'
     },
     theme:{
         type:String,
@@ -30,8 +29,8 @@ const movieSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    mins:{
-        type:Number,
+    duration:{
+        type:String,
         required:true
     },
     description:{

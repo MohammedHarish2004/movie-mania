@@ -1,4 +1,4 @@
-import { Checkbox, Label } from 'flowbite-react'
+import { Checkbox, Label, Spinner } from 'flowbite-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { FaUpload } from "react-icons/fa";
 import { toast } from 'react-toastify';
@@ -7,6 +7,7 @@ import { app } from '../firebase'
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateMovie() {
 
@@ -14,6 +15,7 @@ export default function CreateMovie() {
     const [file,setFile] = useState({})
     const[progress,setProgress] = useState(0)
     const[loading,setLoading] = useState(false)
+    const navigate = useNavigate()
     const[genres,setGenres] = useState('')
     const [formData,setFormData] = useState({
         name:'',
@@ -23,7 +25,7 @@ export default function CreateMovie() {
         image:'',
         age:16,
         year:2024,
-        mins:180,
+        duration:180,
         description:'',
         trending:false,
         newRelease:false
@@ -140,13 +142,13 @@ export default function CreateMovie() {
                 return
             }
 
-            toast.success('Created successfully',{autoClose:1500})
-
+            toast.success('Movie Created successfully',{autoClose:1500})
+            navigate('/dashboard?tab=movie-list',{replace:true})
             
         } 
         
         catch (error) {
-            toast.error(error.message,{autoClose:1500})
+            toast.error(error,{autoClose:1500})
         }
     }
   return (
@@ -233,13 +235,13 @@ export default function CreateMovie() {
                         />
                     </div>
                     <div className='flex flex-col gap-1'>
-                        <Label className='text-white text-base'>Mins</Label>
+                        <Label className='text-white text-base'>Duration</Label>
                         <input
                             onChange={handleChange}
-                            value={formData.mins}
-                            type='number'
-                            placeholder='mins'
-                            id='mins'
+                            value={formData.duration}
+                            type='text'
+                            placeholder='duration'
+                            id='duration'
                             className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
                         />
                     </div>
@@ -276,7 +278,7 @@ export default function CreateMovie() {
                     {
                     formData.image && 
                     <div className='flex-1'>
-                        <img src={formData.image} className='w-full h-36 mt-2 lg:mt-0'/>
+                        <img src={formData.image} className='w-full h-72 mt-2 lg:mt-0'/>
                     </div>
                    }
                 </div>  
@@ -305,8 +307,13 @@ export default function CreateMovie() {
                     <button
                         type='submit'
                         className='bg-yellow-300 w-full  hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 disabled:opacity-80 mt-6 uppercase flex justify-center gap-2 items-center'
+                        disabled={loading}
                     >
-                        <span>Create Movie</span>
+                        <span>{
+                        loading ? 
+                        <span>
+                            <Spinner size='sm' color='gray'/>Uploading...</span> : 'Create Movie'}
+                        </span>
                     </button>
                 </div>
             </form>
