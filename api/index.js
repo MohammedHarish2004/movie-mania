@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import authRouter from './routes/auth.route.js'
 import userRouter from './routes/user.route.js'
 import genreRouter from './routes/genre.route.js'
+import movieRouter from './routes/movie.route.js'
 import cookieParser from 'cookie-parser'
 import path from 'path'
 
@@ -30,6 +31,7 @@ app.use(cookieParser())
 app.use('/api/auth',authRouter)
 app.use('/api/user',userRouter)
 app.use('/api/genre',genreRouter)
+app.use('/api/movie',movieRouter)
 
 app.use(express.static(path.join(__dirname,'/client/dist')));
 
