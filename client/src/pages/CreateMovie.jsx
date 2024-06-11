@@ -120,7 +120,8 @@ export default function CreateMovie() {
            !formData.url?.trim() || 
            !formData.age ||  
            !formData.year ||  
-           !formData.description?.trim() 
+           !formData.description?.trim() ||
+           !formData.image 
         ){
             toast.error('All fields required',{ autoClose: 1500 });
         }
