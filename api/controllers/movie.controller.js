@@ -26,6 +26,7 @@ export const getMovie = async(req,res,next)=>{
         const movie = await Movie.find({
             ...(req.query.genre && {genre:req.query.genre}),
             ...(req.query.theme && {theme:req.query.theme}),
+            ...(req.query.movieId && {_id:req.query.movieId}),
             ...(req.query.searchTerm)&&{name:{$regex:req.query.searchTerm,$options:'i'}}
         })
         res.status(200).json(movie)
@@ -49,3 +50,17 @@ export const deleteMovie = async(req,res,next)=>{
             next(error)    
         }
 }
+
+export const editMovie = async(req,res,next)=>{
+    
+    if(!req.user.isAdmin) return next(errorHandler(401,'Only admin allowed'))
+
+        try {
+            const editMovie = await Movie.findByIdAndUpdate(req.params.id,req.body,{new:true})
+            res.status(200).json(editMovie)
+        } 
+        catch (error) {
+            next(error)    
+        }
+}
+

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
@@ -59,7 +60,7 @@ export default function DashboardMovieList() {
 
                     if(res.ok){
                         toast.success('Movie deleted successfully',{ autoClose: 1000 })
-                        setGenres(prev=>prev.filter((genre)=>genre._id !== genreId))
+                        setMovies(prev=>prev.filter((movie)=>movie._id !== movieId))
                     }
 
                 } 
@@ -91,13 +92,13 @@ export default function DashboardMovieList() {
                         movies && movies.length > 0 ?
                         movies.map((movie)=>(
                             <tr key={movie._id} >
-                                <td>{movie.name}</td>
+                                <td className='max-w-40 truncate '>{movie.name}</td>
                                 <td>{movie.genre}</td>
                                 <td>{movie.theme}</td>
                                 <td><img src={movie.image} alt="movie poster" className='w-full h-20 object-contain'/></td>
                                 <td align='center'>{movie.trending ? <FaCheck className='text-green-400 flex justify-center'/> : <FaTimes className='text-red-600'/>}</td>
                                 <td>{movie.newRelease ? <FaCheck className='text-green-400'/> : <FaTimes className='text-red-600'/>}</td>
-                                <td><button  className='text-green-400'>Edit</button></td>
+                                <td><Link to={`/edit-movie/${movie._id}`}  className='text-green-400'>Edit</Link></td>
                                 <td><button onClick={()=>handleDelete(movie._id,movie.name)} className='text-red-600'>Delete</button></td>
                             </tr>
                         ))

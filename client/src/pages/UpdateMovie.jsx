@@ -7,9 +7,10 @@ import { app } from '../firebase'
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import DashboardSidebar from '../components/DashboardSidebar'
 
-export default function CreateMovie() {
+export default function UpdateMovie() {
 
     const fileRef = useRef(null)
     const [file,setFile] = useState({})
@@ -17,20 +18,31 @@ export default function CreateMovie() {
     const[loading,setLoading] = useState(false)
     const navigate = useNavigate()
     const[genres,setGenres] = useState('')
-    const [formData,setFormData] = useState({
-        name:'',
-        theme:'',
-        genre:'',
-        url:'',
-        image:'',
-        age:16,
-        year:2024,
-        duration:180,
-        description:'',
-        trending:false,
-        newRelease:false
-    })
+    const [formData,setFormData] = useState({})
 
+    const params = useParams()
+    const movieId = params.movieId;
+
+    console.log(params.movieId);
+    useEffect(() => {
+        const fetchMovies = async () => {
+            try {
+                const res = await fetch(`/api/movie/getMovie?movieId=${movieId}`);
+                const data = await res.json();
+
+                if (data.success === false) {
+                    console.log(data.message);
+                } 
+                    setFormData(data[0]);
+              
+            } 
+            catch (error) {
+                console.error('Error fetching movie:', error);
+            }
+        };
+        fetchMovies();
+    }, [params.movieId]);
+console.log(formData);
     // Image upload 
 
     useEffect( () => {
@@ -93,6 +105,7 @@ export default function CreateMovie() {
         fetchGenres()
     },[])
 
+
     
 
     const handleChange = (e)=>{
@@ -127,8 +140,8 @@ export default function CreateMovie() {
         }
 
         try {
-        
-            const res = await fetch('/api/movie/createMovie',{
+            
+            const res = await fetch(`/api/movie/editMovie/${movieId}`,{
                 method:"POST",
                 headers:{
                     'Content-Type':'application/json'
@@ -143,7 +156,7 @@ export default function CreateMovie() {
                 return
             }
 
-            toast.success('Movie Created successfully',{autoClose:1500})
+            toast.success('Movie Updated successfully',{autoClose:1500})
             navigate('/dashboard?tab=movie-list',{replace:true})
             
         } 
@@ -152,16 +165,23 @@ export default function CreateMovie() {
             toast.error(error,{autoClose:1500})
         }
     }
+
+
   return (
+        
+        <div className='flex flex-col md:flex-row min-h-screen'>
+        <div className='md:w-56'>
+          <DashboardSidebar />
+        </div>
         <div className='max-w-5xl w-full p-7'>
-            <h1 className='text-3xl'>Create Movie</h1>
+            <h1 className='text-3xl'>Edit Movie</h1>
             <form onSubmit={handleSubmit}>
                 <div className='flex flex-col md:flex-row gap-6 mt-7'>
                     <div className='flex-1 flex flex-col gap-1'>
                         <Label className='text-white text-base'>Movie Name</Label>
                         <input
                             onChange={handleChange}
-                            value={formData.name}
+                            value={formData.name || ''}
                             placeholder='movie name'
                             id='name'
                             type='text'
@@ -173,7 +193,7 @@ export default function CreateMovie() {
                         <select
                             onChange={handleChange}
                             id='theme'
-                            value={formData.theme}
+                            value={formData.theme || ''}
                             className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
                             style={{ backgroundColor: 'rgb(7, 9, 15)' }}
                         >
@@ -187,7 +207,7 @@ export default function CreateMovie() {
                         <Label className='text-white text-base'>Genre</Label>
                         <select
                             onChange={handleChange}
-                            value={formData.genre}
+                            value={formData.genre || ''}
                             id='genre'
                             className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300 '
                             style={{ backgroundColor: 'rgb(7, 9, 15)' }}
@@ -206,7 +226,7 @@ export default function CreateMovie() {
                         <Label className='text-white text-base'>Trailer URL</Label>
                         <input
                             onChange={handleChange}
-                            value={formData.url}
+                            value={formData.url || ''}
                             placeholder='trailer url'
                             id='url'
                             type='text'
@@ -217,7 +237,7 @@ export default function CreateMovie() {
                         <Label className='text-white text-base'>Age</Label>
                         <input
                             onChange={handleChange}
-                            value={formData.age}
+                            value={formData.age || ''}
                             type='number'
                             placeholder='age'
                             id='age'
@@ -228,7 +248,7 @@ export default function CreateMovie() {
                         <Label className='text-white text-base'>Year</Label>
                         <input
                             onChange={handleChange}
-                            value={formData.year}
+                            value={formData.year || ''}
                             type='number'
                             placeholder='year'
                             id='year'
@@ -239,7 +259,7 @@ export default function CreateMovie() {
                         <Label className='text-white text-base'>Duration</Label>
                         <input
                             onChange={handleChange}
-                            value={formData.duration}
+                            value={formData.duration || ''}
                             type='text'
                             placeholder='duration'
                             id='duration'
@@ -254,7 +274,7 @@ export default function CreateMovie() {
                         <Label className='text-white text-base'>Description</Label>
                         <textarea
                             onChange={handleChange}
-                            value={formData.description}
+                            value={formData.description || ''}
                             type='text'
                             rows='4'
                             placeholder='description'
@@ -287,7 +307,7 @@ export default function CreateMovie() {
                     <div className='flex gap-2 mt-4'>
                         <Checkbox 
                         id='trending' 
-                        checked={formData.trending}
+                        checked={formData.trending || false}
                         type="checkbox" 
                         className='w-6 h-6 bg-gray-950'
                         onChange={handleChange}/>
@@ -296,7 +316,7 @@ export default function CreateMovie() {
                     <div className='flex gap-2 mt-4'>
                         <Checkbox 
                         id='newRelease' 
-                        checked={formData.newRelease}
+                        checked={formData.newRelease || false }
                         type="checkbox" 
                         className='w-6 h-6 bg-gray-950' 
                         onChange={handleChange}
@@ -313,11 +333,12 @@ export default function CreateMovie() {
                         <span>{
                         loading ? 
                         <span>
-                            <Spinner size='sm' color='gray'/>Uploading...</span> : 'Create Movie'}
+                            <Spinner size='sm' color='gray'/>Uploading...</span> : 'Update Movie'}
                         </span>
                     </button>
                 </div>
             </form>
+        </div>
         </div>
   )
 }
