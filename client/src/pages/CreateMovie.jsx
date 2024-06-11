@@ -278,7 +278,7 @@ export default function CreateMovie() {
                     {
                     formData.image && 
                     <div className='flex-1'>
-                        <img src={formData.image} className='w-full h-72 mt-2 lg:mt-0'/>
+                        <img src={formData.image} className='w-auto h-72 mt-2 lg:mt-0'/>
                     </div>
                    }
                 </div>  
