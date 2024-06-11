@@ -24,13 +24,13 @@ body{
   color:rgb(163, 163, 163) !important;
 }
 
-.text-gray-500:hover{
+/* .text-gray-500:hover{
 color:black !important
-}
+} */
 
-.text-gray-900:hover{
+/* .text-gray-900:hover{
   color:rgb(0, 0, 0) !important;
-}
+} */
 
 .bg-gray-100{
   background-color: rgb(58, 58, 58) !important;

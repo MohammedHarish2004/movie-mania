@@ -1,6 +1,6 @@
 import { Sidebar } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
-import { FaSignOutAlt, FaTrashAlt, FaUser } from "react-icons/fa";
+import { FaSignOutAlt, FaTrashAlt, FaUser,FaListUl } from "react-icons/fa";
 import { BiMovie, BiSolidCategory } from "react-icons/bi";
 import Swal from 'sweetalert2';
 import {Link, useLocation, useNavigate} from 'react-router-dom'
@@ -8,7 +8,6 @@ import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutSuccess }
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 export default function DashboardSidebar() {
 
   const location = useLocation()
@@ -132,7 +131,7 @@ export default function DashboardSidebar() {
           }
           {
             currentUser.isAdmin && 
-            <Sidebar.Item className='font-medium cursor-pointer' as={Link} to={'/dashboard?tab=movie-list'} active={tab === 'movie-list'}  labelColor="light" icon={BiMovie}>
+            <Sidebar.Item className='font-medium cursor-pointer' as={Link} to={'/dashboard?tab=movie-list'} active={tab === 'movie-list'}  labelColor="light" icon={FaListUl}>
               <span className='font-medium cursor-pointer'>Movie Lists</span>
             </Sidebar.Item>
           }

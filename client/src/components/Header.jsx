@@ -10,7 +10,8 @@ import { signOutSuccess } from "../redux/User/userSlice";
 import { FaSignOutAlt, FaUserAlt } from "react-icons/fa";
 
 export default function Header() {
-    const path = useLocation().pathname
+    const location = useLocation()
+    const path = location.pathname + location.search
     const {currentUser} = useSelector(state=>state.user)
 
     const navigate = useNavigate()
@@ -93,9 +94,19 @@ export default function Header() {
                 <span className={`text-lg ${path === '/' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Home</span>
             </Navbar.Link>
           </Link>
-          <Link to='/movies'>
-            <Navbar.Link  active={path === '/movies'} as={'div'} className={path === '/movies' ? 'bg-transparent font-medium hover:text-white' : ''} >
-                <span className={`text-lg ${path === '/movies' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Movies</span>
+          <Link to='/movies?theme=movie'>
+            <Navbar.Link  active={path === '/movies?theme=movie'} as={'div'} className={path === '/movies?theme=movie' ? 'bg-transparent font-medium hover:text-white' : ''} >
+                <span className={`text-lg ${path === '/movies?theme=movie' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Movies</span>
+            </Navbar.Link>
+          </Link>
+          <Link to='/movies?theme=anime'>
+            <Navbar.Link  active={path === '/movies?theme=anime'} as={'div'} className={path === '/movies?theme=anime' ? 'bg-transparent font-medium hover:text-white' : ''} >
+                <span className={`text-lg ${path === '/movies?theme=anime' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Animes</span>
+            </Navbar.Link>
+          </Link>
+          <Link to='/movies?theme=series'>
+            <Navbar.Link  active={path === '/movies?theme=series'} as={'div'} className={path === '/movies?theme=series' ? 'bg-transparent font-medium hover:text-white' : ''} >
+                <span className={`text-lg ${path === '/movies?theme=series' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Series</span>
             </Navbar.Link>
           </Link>
           <Link to='/watch-later' className="md:hidden">
