@@ -13,14 +13,21 @@ export default function Movie() {
         genre: '',
         searchTerm: ''
     });
+    const[totalPages,setTotalPages] = useState(1)
+    const[currentPage,setCurrentPage] = useState(1)
+    const[totalMovies,setTotalMovies] = useState()
+
     const [isOpen, setIsOpen] = useState(false);
     const handleClose = () => setIsOpen(false);
 
-    const fetchMovies = async (searchTerm = '', genre = '') => {
+    const fetchMovies = async (searchTerm = '', genre = '',page=1) => {
         setLoading(true);
-        const res = await fetch(`/api/movie/getMovie?theme=series&searchTerm=${searchTerm}&genre=${genre}`);
+        const res = await fetch(`/api/movie/getMovie?theme=series&page=${page}&limit=8&searchTerm=${searchTerm}&genre=${genre}`);
         const data = await res.json();
-        setMovies(data);
+        setMovies(data.movies,);
+        setCurrentPage(data.currentPage);
+        setTotalPages(data.totalPages);
+        setTotalMovies(data.totalMovies);
         setLoading(false);
     };
 
@@ -29,7 +36,7 @@ export default function Movie() {
             const res = await fetch('/api/genre/getGenre');
             const data = await res.json();
             if (res.ok) {
-                setGenres(data);
+                setGenres(data.genres);
             }
         };
         fetchGenres();
@@ -47,11 +54,13 @@ export default function Movie() {
                 searchTerm: searchTermFromUrl || '',
                 genre: genreFromUrl || ''
             });
+            fetchMovies(searchTermFromUrl, genreFromUrl, 1);
         } else {
             fetchMovies();
         }
     }, []);
 
+  
 
     const applyFilter = (genre) => {
         setFormData({
@@ -66,7 +75,7 @@ export default function Movie() {
         }
         const searchQuery = urlParams.toString();
         navigate(`/movies?theme=series&${searchQuery}`);
-        fetchMovies(formData.searchTerm,genre);
+        fetchMovies(formData.searchTerm,genre,1);
     };
 
     const handleSubmit = (e) => {
@@ -75,7 +84,7 @@ export default function Movie() {
         urlParams.set('searchTerm', formData.searchTerm);
         const searchQuery = urlParams.toString();
         navigate(`/movies?theme=series&${searchQuery}`)
-        fetchMovies(formData.searchTerm);
+        fetchMovies(formData.searchTerm,1);
         setFormData({
             searchTerm:''
         })
@@ -90,7 +99,7 @@ export default function Movie() {
     return (
         <div className='max-w-full flex flex-wrap justify-center items-center mx-auto sm:justify-start gap-4 p-7'>
             <div className='container '>
-                <h1 className='text-3xl sm:text-4xl w-full'>Anime</h1>
+                <h1 className='text-3xl sm:text-4xl w-full'>Animes</h1>
                 <div className='flex justify-between gap-1 mt-6'>
                     <button className='bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 disabled:opacity-80 uppercase flex items-center gap-1' onClick={() => setIsOpen(true)}><FaFilter />Filter</button>
                     <form onSubmit={handleSubmit}>
@@ -112,14 +121,35 @@ export default function Movie() {
                     </Drawer>
                 </div>
             </div>
-            {movies && movies.length > 0 ? movies.map((movie) => (
-                <MovieCard key={movie._id} movie={movie} />
-            ))
-            :
-            <div className='mx-auto flex flex-col items-center justify-center p-3'>
-                <p className='text-4xl mt-4 text-center font-semibold'>Results <span className='text-yellow-300'>not found</span></p>
+                {movies && movies.length > 0 ? movies.map((movie) => (
+                    <MovieCard key={movie._id} movie={movie} />
+                ))
+                    :
+                    <div className='mx-auto flex flex-col items-center justify-center p-3'>
+                        <p className='text-4xl mt-4 text-center font-semibold'>Results <span className='text-yellow-300'>not found</span></p>
+                    </div>
+                }
+
+        {/* Pagination controls */}
+            <div className='flex w-full justify-center items-center mt-4 gap-5'>
+                <button 
+                className='px-4 py-2 bg-yellow-300 text-black rounded-lg cursor-pointer disabled:cursor-not-allowed'
+                onClick={()=>fetchMovies(formData.searchTerm, formData.genre, currentPage - 1)}
+                disabled={currentPage === 1}
+                >
+                    Previous
+                </button>
+                <span>
+                    {currentPage} of {totalPages}
+                </span>
+                <button 
+                className='px-4 py-2 bg-yellow-300 text-black rounded-lg cursor-pointer disabled:cursor-not-allowed'
+                onClick={()=>fetchMovies(formData.searchTerm, formData.genre, currentPage + 1)}
+                disabled={currentPage === totalPages}
+                >
+                    Next
+                </button>
             </div>
-        }
         </div>
     )
 }
