@@ -155,7 +155,7 @@ export default function CreateMovie() {
   return (
         <div className='max-w-5xl w-full p-7'>
             <h1 className='text-3xl'>Create Movie</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete='off'>
                 <div className='flex flex-col md:flex-row gap-6 mt-7'>
                     <div className='flex-1 flex flex-col gap-1'>
                         <Label className='text-white text-base'>Movie Name</Label>

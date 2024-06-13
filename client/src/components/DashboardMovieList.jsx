@@ -106,7 +106,7 @@ export default function DashboardMovieList() {
            <h1 className='text-3xl mt-3'>Movie Lists</h1>
            <div className='flex justify-between'>
                 <p className='text-xl font-medium my-6'>Total movies : {totalMovies}</p>
-                <form onSubmit={handleSearch}>
+                <form onSubmit={handleSearch} autoComplete='off'>
                     <div className='flex justify-end gap-2 my-4'>
                         <input onChange={(e)=>setFormData({...formData,searchTerm:e.target.value})} placeholder='Search...' id='search' value={formData.searchTerm} className='bg-transparent block p-2 rounded-lg w-[150px] sm:w-auto outline-none border border-yellow-300' />
 

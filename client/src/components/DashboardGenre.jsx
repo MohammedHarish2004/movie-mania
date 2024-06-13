@@ -140,7 +140,7 @@ export default function DashboardGenre() {
             {/* Genre Creation */}
             <div>
                 <h1 className='text-3xl my-7'>Create Genre</h1>
-                <form onSubmit={handleSubmit} className='flex flex-col lg:flex-row lg:gap-4 lg:justify-center lg:items-center'>
+                <form onSubmit={handleSubmit} autoComplete='off' className='flex flex-col lg:flex-row lg:gap-4 lg:justify-center lg:items-center'>
                     <div className='flex-1 flex flex-col gap-1'>
                         <Label className='text-white text-base'>Genre Name</Label>
                         <input
@@ -169,7 +169,7 @@ export default function DashboardGenre() {
                 <h1 className='text-3xl mt-3'>Genre Lists</h1>
                 <div className='flex justify-between'>
                     <p className='text-xl font-medium my-6'>Total genres : {totalGenres}</p>
-                    <form onSubmit={handleSearch}>
+                    <form onSubmit={handleSearch} autoComplete='off'>
                         <div className='flex justify-end gap-2 my-4'>
                             <input onChange={(e)=>setFormData({...formData,searchTerm:e.target.value})} placeholder='Search...' id='search' value={formData.searchTerm} className='bg-transparent block p-2 rounded-lg w-[150px] sm:w-auto outline-none border border-yellow-300' />
                             
@@ -213,15 +213,15 @@ export default function DashboardGenre() {
             {/* Pagination Controls */}
             <div className='flex justify-between items-center mt-4'>
                 <button 
-                    onClick={() => fetchGenres(formData.searchTerm,currentPage - 1)} 
+                    onClick={() => fetchGenres(currentPage - 1)} 
                     disabled={currentPage === 1} 
                     className='px-4 py-2 bg-yellow-300 text-black rounded-lg cursor-pointer disabled:cursor-not-allowed'
-                >
+                > 
                     Previous
                 </button>
                 <span>Page {currentPage} of {totalPages}</span>
                 <button 
-                    onClick={() => fetchGenres(formData.searchTerm,currentPage + 1)} 
+                    onClick={() => fetchGenres(currentPage + 1)} 
                     disabled={currentPage === totalPages} 
                     className='px-4 py-2 bg-yellow-300 text-black rounded-lg'
                 >

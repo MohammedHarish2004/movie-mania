@@ -15,7 +15,7 @@ export default function Movie() {
     });
     const[totalPages,setTotalPages] = useState(1)
     const[currentPage,setCurrentPage] = useState(1)
-    const[totalMovies,setTotalMovies] = useState()
+    const[title,setTitle] = useState('All')
 
     const [isOpen, setIsOpen] = useState(false);
     const handleClose = () => setIsOpen(false);
@@ -27,7 +27,6 @@ export default function Movie() {
         setMovies(data.movies);
         setCurrentPage(data.currentPage);
         setTotalPages(data.totalPages);
-        setTotalMovies(data.totalMovies);
         setLoading(false);
     };
 
@@ -60,10 +59,15 @@ export default function Movie() {
         }
     }, []);
 
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
     const applyFilter = (selectedGenre) => {
         setIsOpen(false);
         setFormData({ ...formData, genre: selectedGenre });
         navigate(`/movies?theme=series&genre=${selectedGenre}`);
+        setTitle(capitalizeFirstLetter(selectedGenre))
         fetchMovies(formData.searchTerm, selectedGenre, currentPage);
     };
     
@@ -86,10 +90,10 @@ export default function Movie() {
     return (
         <div className='max-w-full flex flex-wrap justify-center items-center mx-auto sm:justify-start gap-4 p-7'>
             <div className='container '>
-                <h1 className='text-3xl sm:text-4xl w-full'>Series</h1>
+                <h1 className='text-3xl sm:text-4xl w-full'>{title} Animes</h1>
                 <div className='flex justify-between gap-1 mt-6'>
                     <button className='bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 disabled:opacity-80 uppercase flex items-center gap-1' onClick={() => setIsOpen(true)}><FaFilter />Filter</button>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} autoComplete='off'>
                         <div className='flex gap-2'>
                             <input onChange={(e)=>setFormData({searchTerm:e.target.value})} placeholder='Search...' id='search' value={formData.searchTerm} className='bg-transparent block p-2 rounded-lg w-[150px] sm:w-full outline-none border border-yellow-300' />
                             <button className='bg-yellow-300 hover:bg-yellow-300 text-black p-2 px-2 rounded-lg font-bold transition delay-50 hover:opacity-85  disabled:opacity-80 uppercase flex items-center gap-1'><FaSearch /></button>
@@ -98,10 +102,10 @@ export default function Movie() {
                     <Drawer open={isOpen} onClose={handleClose} className='bg-black text-white'>
                         <Drawer.Header title="Filter" />
                         <Drawer.Items>
-                            <button onClick={() => applyFilter('')} className='text-2xl border-b py-3'>All Series</button>
+                            <button onClick={() => applyFilter('')} className='text-xl py-3'>All Animes</button>
                             {genres && genres.map((genre) => (
                                 <div key={genre._id}>
-                                    <button onClick={() => applyFilter(genre.name.toLowerCase())}  className='text-2xl border-b py-3'>{genre.name}</button>
+                                    <button onClick={() => applyFilter(genre.name.toLowerCase())}  className='text-xl  py-3'>{genre.name}</button>
                                 </div>
                             ))}
                         </Drawer.Items>

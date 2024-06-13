@@ -23,14 +23,14 @@ export const getGenre = async (req, res, next) => {
     if (!req.user.isAdmin) return next(errorHandler(401, 'Only Admin allowed to get'));
 
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
+    const limit = parseInt(req.query.limit) ||  Number.MAX_SAFE_INTEGER;
     const skip = (page - 1) * limit;
-
+    const sort = req.query.order === 'asc' ? -1 : 1  
     try {
         const filter = {
             ...(req.query.searchTerm) && {name:{$regex:req.query.searchTerm,$options:'i'}}
         }
-        const genres = await Genre.find(filter).skip(skip).limit(limit);
+        const genres = await Genre.find(filter).sort({createdAt:sort}).skip(skip).limit(limit);
         const totalGenres = await Genre.countDocuments(filter);
 
         res.status(200).json({

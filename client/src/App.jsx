@@ -12,10 +12,12 @@ import AdminPrivateRoute from './components/AdminPrivateRoute.jsx'
 import WatchLater from './pages/WatchLater.jsx'
 import FooterCom from './components/FooterComp.jsx'
 import UpdateMovie from './pages/UpdateMovie.jsx'
+import ScrollToTop from './components/ScrollToTop.jsx'
 
 export default function App() {
   return (
    <BrowserRouter>
+   <ScrollToTop />
    <Header />
     <Routes>
       <Route path='/' element={<Home />}/>
