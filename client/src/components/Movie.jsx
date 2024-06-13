@@ -88,7 +88,7 @@ export default function Movie() {
     );
 
     return (
-        <div className='max-w-full flex flex-wrap justify-center items-center mx-auto sm:justify-start gap-4 p-7'>
+        <div className='max-w-full flex flex-wrap justify-center items-center mx-auto sm:justify-center gap-4 p-7'>
             <div className='container '>
                 <h1 className='text-3xl sm:text-4xl w-full'>{title ? title : 'All'} Movies</h1>
                 <div className='flex justify-between gap-1 mt-6'>
@@ -114,7 +114,7 @@ export default function Movie() {
                 </div>
             </div>
                 {movies && movies.length > 0 ? movies.map((movie) => (
-                    <MovieCard key={movie._id} movie={movie} />
+                    <MovieCard key={movie._id} movie={movie} loading={loading}/>
                 ))
                     :
                     <div className='mx-auto flex flex-col items-center justify-center p-3'>

@@ -1,13 +1,21 @@
+import { Spinner } from 'flowbite-react';
 import React from 'react'
 import { FaClock ,FaCalendar } from "react-icons/fa";
 import { MdMovie } from "react-icons/md";
 
-export default function MovieCard({movie}) {
+export default function MovieCard({movie,loading}) {
+ 
+  if (loading) return (
+    <div className="flex justify-center items-center min-h-screen">
+        <Spinner size='xl' />
+    </div>
+);
+
   return (
     <div className='my-3'>
         <div className="relative overflow-hidden group transition-all">
             <img 
-            src={movie.image} 
+            src={loading ? <Spinner size='xl' /> : movie.image} 
             alt="movie poster"
              className="
               w-[140px] h-[230px]
