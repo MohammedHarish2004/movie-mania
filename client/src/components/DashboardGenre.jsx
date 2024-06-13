@@ -7,26 +7,34 @@ import Swal from 'sweetalert2';
 
 export default function DashboardGenre() {
 
-    const [formData,setFormData] = useState({name:'',id:''})
-    const {currentUser} = useSelector(state=>state.user)
-    const [genres,setGenres] = useState()
-    const ScrollRef = useRef(null)
+    const [formData, setFormData] = useState({ name: '', id: '' });
+    const { currentUser } = useSelector(state => state.user);
+    const [genres, setGenres] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalGenres, setTotalGenres] = useState();
+    const ScrollRef = useRef(null);
+
     
     // Get Genre
-    const fetchGenres = async()=>{
-        const res = await fetch('/api/genre/getGenre')
-        const data = await res.json()
-        if(res.ok){
-            setGenres(data)
+    const fetchGenres = async (page = 1) => {
+        const res = await fetch(`/api/genre/getGenre?page=${page}&limit=5`);
+        const data = await res.json();
+        if (res.ok) {
+            setGenres(data.genres);
+            setCurrentPage(data.currentPage);
+            setTotalPages(data.totalPages);
+            setTotalGenres(data.totalGenres)
         }
     }
+    
 
-    useEffect(()=>{
-
-        if(currentUser.isAdmin){
-            fetchGenres()
+    useEffect(() => {
+        if (currentUser.isAdmin) {
+            fetchGenres();
         }
-    },[])
+    }, [currentUser.isAdmin]);
+    
     
     // Delete Genre
     const handleDelete = async(genreId,genreName)=>{
@@ -109,73 +117,90 @@ export default function DashboardGenre() {
     
     
   return (
-    <div className='max-w-4xl w-full p-7 flex flex-col gap-10'>
-
-        {/* Genre Creation */}
-        <div >
-            <h1 className='text-3xl my-7'>Create Genre</h1>
-            <form  onSubmit={handleSubmit} className='flex flex-col lg:flex-row lg:gap-4 lg:justify-center lg:items-center '>
-            <div className='flex-1 flex flex-col gap-1'>
-                <Label className='text-white text-base'>Genre Name</Label>
-                <input
-                    onChange={(e) =>
-                        setFormData({
-                            ...formData,
-                            [e.target.id]: e.target.value,
-                        })
-                    }
-                    ref={ScrollRef}
-                    placeholder='genre name'
-                    value={formData.name}
-                    id='name'
-                    className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
-                />
+        <div className='max-w-4xl w-full p-7 flex flex-col gap-10'>
+            {/* Genre Creation */}
+            <div>
+                <h1 className='text-3xl my-7'>Create Genre</h1>
+                <form onSubmit={handleSubmit} className='flex flex-col lg:flex-row lg:gap-4 lg:justify-center lg:items-center'>
+                    <div className='flex-1 flex flex-col gap-1'>
+                        <Label className='text-white text-base'>Genre Name</Label>
+                        <input
+                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                            ref={ScrollRef}
+                            placeholder='genre name'
+                            value={formData.name}
+                            id='name'
+                            className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
+                        />
+                    </div>
+                    <div className='flex-1'>
+                        <button
+                            type='submit'
+                            className='bg-yellow-300 w-auto px-7 lg:w-72 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 disabled:opacity-80 mt-6 uppercase flex justify-center gap-2 items-center'
+                        >
+                            <span>{formData.id ? 'Update Genre' : 'Create Genre'}</span>
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div className='flex-1'>
-                <button
-                    type='submit'
-                    className='bg-yellow-300 w-auto px-7 lg:w-72 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 disabled:opacity-80 mt-6 uppercase flex justify-center gap-2 items-center'
+    
+            {/* Genre list */}
+            <div className='overflow-auto'>
+                <h1 className='text-3xl mt-3'>Genre Lists</h1>
+                <p className='text-xl font-medium my-6'>Total genres : {totalGenres}</p>
+                
+                <table className='w-full'>                    
+                    <thead>
+                        <tr>
+                            <th>S No.</th>
+                            <th>Genres</th>
+                            <th>Created At</th>
+                            <th colSpan='2'>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {genres && genres.length > 0 ? (
+                            genres.map((genre, index) => (
+                                <tr key={genre._id}>
+                                    <td>{(currentPage - 1) * 5 + index + 1}</td>
+                                    <td>{genre.name}</td>
+                                    <td>{new Date(genre.createdAt).toLocaleDateString()}</td>
+                                    <td>
+                                        <button onClick={() => { handleEdit(genre._id, genre.name); ScrollRef.current.focus() }} className='text-green-400'>Edit</button>
+                                    </td>
+                                    <td>
+                                        <button onClick={() => handleDelete(genre._id, genre.name)} className='text-red-600'>Delete</button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" align="center">No genres created yet</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+    
+            {/* Pagination Controls */}
+            <div className='flex justify-between items-center mt-4'>
+                <button 
+                    onClick={() => fetchGenres(currentPage - 1)} 
+                    disabled={currentPage === 1} 
+                    className='px-4 py-2 bg-yellow-300 text-black rounded-lg cursor-pointer disabled:cursor-not-allowed'
                 >
-                    <span>{formData.id ? 'Update Genre' : 'Create Genre'}</span>
+                    Previous
+                </button>
+                <span>Page {currentPage} of {totalPages}</span>
+                <button 
+                    onClick={() => fetchGenres(currentPage + 1)} 
+                    disabled={currentPage === totalPages} 
+                    className='px-4 py-2 bg-yellow-300 text-black rounded-lg'
+                >
+                    Next
                 </button>
             </div>
-        </form>
         </div>
-
-        {/* Genre list */}
-
-        <div className='overflow-auto '>
-            <h1 className='text-3xl my-7'>Genre Lists</h1>
-            <table className='w-full '>
-                <thead>
-                    <tr>
-                        <th>S No.</th>
-                        <th>Genres</th>
-                        <th>Created At</th>
-                        <th colSpan='2'>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {genres && genres.length > 0 ? (
-                    genres.map((genre, index) => (
-                        <tr key={genre._id}>
-                            <td>{index + 1}</td>
-                            <td>{genre.name}</td>
-                            <td>{new Date(genre.createdAt).toLocaleDateString()}</td>
-                            <td><button onClick={() => {handleEdit(genre._id,genre.name);ScrollRef.current.focus()}} className='text-green-400'>Edit</button></td>
-                            <td>
-                                <button onClick={() => handleDelete(genre._id, genre.name)} className='text-red-600'>Delete</button>
-                            </td>
-                        </tr>
-                    ))
-                    ) : (
-                        <tr>
-                            <td colSpan="5" align="center">No genres created yet</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    
   )
 }

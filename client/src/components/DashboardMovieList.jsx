@@ -10,17 +10,20 @@ export default function DashboardMovieList() {
 
     const [movies,setMovies] = useState('')
     const {currentUser} = useSelector(state=>state.user)
+    const [currentPage,setCurrentPage] = useState(1)
+    const [totalPages,setTotalPages] = useState(1)
+    const [totalMovies,setTotalMovies] = useState()
 
-    const fetchMovies = async()=>{
-        try {
-            const res = await fetch('/api/movie/getMovie')
+    const fetchMovies = async(page=1)=>{
+            const res = await fetch(`/api/movie/getMovie?page=${page}&limit=5`)
             const data = await res.json()
-            setMovies(data)
-        } 
+            setMovies(
+                data.movies,
+                setTotalMovies(data.totalMovies),
+                setCurrentPage(data.currentPage),
+                setTotalPages(data.totalPages)
+            )
         
-        catch (error) {
-            toast.error(error.message,{autoClose:1500})    
-        }
     }
 
     useEffect(()=>{
@@ -74,7 +77,8 @@ export default function DashboardMovieList() {
   return (
     <div className=' w-full p-7 flex flex-col gap-10'>
           <div className='overflow-auto '>
-            <h1 className='text-3xl my-7'>Movie Lists</h1>
+           <h1 className='text-3xl mt-3'>Movie Lists</h1>
+            <p className='text-xl font-medium my-6'>Total movies : {totalMovies}</p>
             <table className='w-full'>
                 <thead>
                     <tr>
@@ -109,6 +113,26 @@ export default function DashboardMovieList() {
                     }
                 </tbody>
             </table>
+        </div>
+
+        {/* Pagination controls */}
+
+        <div className='flex justify-center items-center gap-5 mt-4'>
+            <button  
+            onClick={()=>fetchMovies(currentPage - 1)}
+            disabled={currentPage === 1}
+            className='px-4 py-2 bg-yellow-300 text-black rounded-lg cursor-pointer disabled:cursor-not-allowed'>
+                Previous
+            </button>
+            <span>
+                {currentPage} of {totalPages}
+            </span>
+            <button  
+            onClick={()=>fetchMovies(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className='px-4 py-2 bg-yellow-300 text-black rounded-lg cursor-pointer disabled:cursor-not-allowed'>
+                Next
+            </button>
         </div>
     </div>
   )

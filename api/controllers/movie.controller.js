@@ -23,13 +23,26 @@ export const getMovie = async(req,res,next)=>{
     if(!req.user.isAdmin) return next(errorHandler(401,'Only admin allowed'))
     
     try {
-        const movie = await Movie.find({
+        const page = parseInt(req.query.page) || 1
+        const limit = parseInt(req.query.limit) || 5
+        const skip = ( page - 1 ) * limit
+        
+        const filter = {
             ...(req.query.genre && {genre:req.query.genre}),
             ...(req.query.theme && {theme:req.query.theme}),
             ...(req.query.movieId && {_id:req.query.movieId}),
             ...(req.query.searchTerm)&&{name:{$regex:req.query.searchTerm,$options:'i'}}
+        }
+        const movies = await Movie.find(filter).skip(skip).limit(limit)
+
+        const totalMovies = await Movie.countDocuments(filter)
+
+        res.status(200).json({
+            movies,
+            currentPage:page,
+            totalPages:Math.ceil(totalMovies/limit),
+            totalMovies
         })
-        res.status(200).json(movie)
 
     } 
     

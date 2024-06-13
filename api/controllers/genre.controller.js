@@ -19,18 +19,28 @@ export const createGenre = async (req,res,next)=>{
     }
 }
 
-export const getGenre = async(req,res,next)=>{
+export const getGenre = async (req, res, next) => {
+    if (!req.user.isAdmin) return next(errorHandler(401, 'Only Admin allowed to get'));
 
-    if(!req.user.isAdmin) return next(errorHandler(401,'Only Admin allowed to get'))
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
 
-       try {
-        const genres = await Genre.find()
-        res.status(200).json(genres)
-       } 
-       catch (error) {
-        next(error)
-       }
+    try {
+        const genres = await Genre.find().skip(skip).limit(limit);
+        const totalGenres = await Genre.countDocuments();
+
+        res.status(200).json({
+            genres,
+            currentPage: page,
+            totalPages: Math.ceil(totalGenres / limit),
+            totalGenres
+        });
+    } catch (error) {
+        next(error);
+    }
 }
+
 
 export const editGenre = async(req,res,next)=>{
 
