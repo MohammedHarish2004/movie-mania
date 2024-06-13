@@ -6,6 +6,6 @@ const router = express.Router()
 
 router.post('/createGenre',verifyToken,createGenre)
 router.post('/editGenre/:id',verifyToken,editGenre)
-router.get('/getGenre',verifyToken,getGenre)
+router.get('/getGenre',getGenre)
 router.delete('/deleteGenre/:id',verifyToken,deleteGenre)
 export default router;

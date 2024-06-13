@@ -20,7 +20,6 @@ export const createGenre = async (req,res,next)=>{
 }
 
 export const getGenre = async (req, res, next) => {
-    if (!req.user.isAdmin) return next(errorHandler(401, 'Only Admin allowed to get'));
 
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) ||  Number.MAX_SAFE_INTEGER;

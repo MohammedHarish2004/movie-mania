@@ -20,7 +20,6 @@ export const createMovie = async(req,res,next)=>{
 
 export const getMovie = async(req,res,next)=>{
     
-    if(!req.user.isAdmin) return next(errorHandler(401,'Only admin allowed'))
     
     try {
         const page = parseInt(req.query.page) || 1

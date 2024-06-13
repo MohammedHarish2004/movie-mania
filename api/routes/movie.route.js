@@ -5,7 +5,7 @@ import { createMovie, getMovie ,deleteMovie,editMovie} from '../controllers/movi
 const router = express.Router()
 
 router.post('/createMovie',verifyToken,createMovie)
-router.get('/getMovie',verifyToken,getMovie)
+router.get('/getMovie',getMovie)
 router.delete('/deleteMovie/:id',verifyToken,deleteMovie)
 router.post('/editMovie/:id',verifyToken,editMovie)
 export default router

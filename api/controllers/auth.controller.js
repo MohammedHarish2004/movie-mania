@@ -35,7 +35,7 @@ export const login = async(req,res,next) =>{
         
         const {password:pass,...rest} = validUser._doc
 
-        res.cookie('access_token',token,{httpOnly:true})
+        res.cookie('access_token',token,{httpOnly:true,expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)})
         .status(200)
         .json(rest)
     }
@@ -54,7 +54,7 @@ export const google = async (req,res,next)=>{
             const token = jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:'7d'})
             const {password:pass,...rest} = user._doc
 
-            res.cookie('access_token',token,{httpOnly:true})
+            res.cookie('access_token',token,{httpOnly:true,expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)})
             .status(200)
             .json(rest)
         }
@@ -76,7 +76,7 @@ export const google = async (req,res,next)=>{
 
         const {password:pass,...rest} = newUser._doc
 
-        res.cookie('access_token',token,{httpOnly:true})
+        res.cookie('access_token',token,{httpOnly:true,expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)})
         .status(200)
         .json(rest)
         }

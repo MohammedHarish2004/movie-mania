@@ -90,7 +90,7 @@ export default function Movie() {
     return (
         <div className='max-w-full flex flex-wrap justify-center items-center mx-auto sm:justify-start gap-4 p-7'>
             <div className='container '>
-                <h1 className='text-3xl sm:text-4xl w-full'>{title} Movies</h1>
+                <h1 className='text-3xl sm:text-4xl w-full'>{title ? title : 'All'} Movies</h1>
                 <div className='flex justify-between gap-1 mt-6'>
                     <button className='bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 disabled:opacity-80 uppercase flex items-center gap-1' onClick={() => setIsOpen(true)}><FaFilter />Filter</button>
                     <form onSubmit={handleSubmit}>

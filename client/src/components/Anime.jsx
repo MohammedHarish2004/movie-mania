@@ -4,7 +4,7 @@ import { Drawer, Label, Spinner } from 'flowbite-react'
 import { FaFilter, FaSearch } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 
-export default function Movie() {
+export default function Anime() {
     const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -88,9 +88,9 @@ export default function Movie() {
     );
 
     return (
-        <div className='max-w-full flex flex-wrap justify-center items-center mx-auto sm:justify-start gap-4 p-7'>
+        <div className='max-w-full flex flex-wrap justify-center items-center mx-auto sm:justify-start gap-4 p-7 '>
             <div className='container '>
-                <h1 className='text-3xl sm:text-4xl w-full'>{title} Animes</h1>
+                <h1 className='text-3xl sm:text-4xl w-full'>{title ? title : 'All'} Animes</h1>
                 <div className='flex justify-between gap-1 mt-6'>
                     <button className='bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 disabled:opacity-80 uppercase flex items-center gap-1' onClick={() => setIsOpen(true)}><FaFilter />Filter</button>
                     <form onSubmit={handleSubmit} autoComplete='off'> 
