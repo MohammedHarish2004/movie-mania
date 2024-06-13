@@ -23,7 +23,6 @@ export default function UpdateMovie() {
     const params = useParams()
     const movieId = params.movieId;
 
-    console.log(params.movieId);
     useEffect(() => {
         const fetchMovies = async () => {
             try {
@@ -33,7 +32,7 @@ export default function UpdateMovie() {
                 if (data.success === false) {
                     console.log(data.message);
                 } 
-                    setFormData(data[0]);
+                    setFormData(data.movies[0]);
               
             } 
             catch (error) {
@@ -42,7 +41,7 @@ export default function UpdateMovie() {
         };
         fetchMovies();
     }, [params.movieId]);
-console.log(formData);
+
     // Image upload 
 
     useEffect( () => {
@@ -99,7 +98,7 @@ console.log(formData);
             const data = await res.json()
 
             if(res.ok){
-                setGenres(data)
+                setGenres(data.genres)
             }
         }
         fetchGenres()

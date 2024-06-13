@@ -27,8 +27,11 @@ export const getGenre = async (req, res, next) => {
     const skip = (page - 1) * limit;
 
     try {
-        const genres = await Genre.find().skip(skip).limit(limit);
-        const totalGenres = await Genre.countDocuments();
+        const filter = {
+            ...(req.query.searchTerm) && {name:{$regex:req.query.searchTerm,$options:'i'}}
+        }
+        const genres = await Genre.find(filter).skip(skip).limit(limit);
+        const totalGenres = await Genre.countDocuments(filter);
 
         res.status(200).json({
             genres,

@@ -4,10 +4,12 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
+import { FaSearch } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom';
 
 export default function DashboardGenre() {
-
-    const [formData, setFormData] = useState({ name: '', id: '' });
+    const navigate = useNavigate()
+    const [formData, setFormData] = useState({ name: '', id: '' ,searchTerm:''});
     const { currentUser } = useSelector(state => state.user);
     const [genres, setGenres] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -15,10 +17,27 @@ export default function DashboardGenre() {
     const [totalGenres, setTotalGenres] = useState();
     const ScrollRef = useRef(null);
 
+    useEffect(()=>{
+        const urlParams = new URLSearchParams(window.location.search)
+        const searchTermFromUrl = urlParams.get('searchTerm')
+        if(searchTermFromUrl){
+            setFormData(prev => ({ ...prev, searchTerm: searchTermFromUrl }));
+            fetchGenres(currentPage, searchTermFromUrl);
+        } else {
+            fetchGenres();
+        }
+    },[])
+
+    const handleSearch = (e)=>{
+        e.preventDefault()
+        const searchTerm = formData.searchTerm.trim();
+        navigate(`/dashboard?tab=genre&searchTerm=${searchTerm}`);
+        fetchGenres(currentPage, searchTerm);
+    }
     
     // Get Genre
-    const fetchGenres = async (page = 1) => {
-        const res = await fetch(`/api/genre/getGenre?page=${page}&limit=5`);
+    const fetchGenres = async (page = 1,searchTerm='') => {
+        const res = await fetch(`/api/genre/getGenre?page=${page}&limit=5&searchTerm=${searchTerm}`);
         const data = await res.json();
         if (res.ok) {
             setGenres(data.genres);
@@ -146,9 +165,18 @@ export default function DashboardGenre() {
     
             {/* Genre list */}
             <div className='overflow-auto'>
+           
                 <h1 className='text-3xl mt-3'>Genre Lists</h1>
-                <p className='text-xl font-medium my-6'>Total genres : {totalGenres}</p>
-                
+                <div className='flex justify-between'>
+                    <p className='text-xl font-medium my-6'>Total genres : {totalGenres}</p>
+                    <form onSubmit={handleSearch}>
+                        <div className='flex justify-end gap-2 my-4'>
+                            <input onChange={(e)=>setFormData({...formData,searchTerm:e.target.value})} placeholder='Search...' id='search' value={formData.searchTerm} className='bg-transparent block p-2 rounded-lg w-[150px] sm:w-auto outline-none border border-yellow-300' />
+                            
+                            <button  className='bg-yellow-300 hover:bg-yellow-300 text-black p-2 px-2 rounded-lg font-bold transition delay-50 hover:opacity-85  disabled:opacity-80 uppercase flex items-center gap-1'><FaSearch /></button>
+                        </div>
+                    </form>
+                </div>
                 <table className='w-full'>                    
                     <thead>
                         <tr>
@@ -185,7 +213,7 @@ export default function DashboardGenre() {
             {/* Pagination Controls */}
             <div className='flex justify-between items-center mt-4'>
                 <button 
-                    onClick={() => fetchGenres(currentPage - 1)} 
+                    onClick={() => fetchGenres(formData.searchTerm,currentPage - 1)} 
                     disabled={currentPage === 1} 
                     className='px-4 py-2 bg-yellow-300 text-black rounded-lg cursor-pointer disabled:cursor-not-allowed'
                 >
@@ -193,7 +221,7 @@ export default function DashboardGenre() {
                 </button>
                 <span>Page {currentPage} of {totalPages}</span>
                 <button 
-                    onClick={() => fetchGenres(currentPage + 1)} 
+                    onClick={() => fetchGenres(formData.searchTerm,currentPage + 1)} 
                     disabled={currentPage === totalPages} 
                     className='px-4 py-2 bg-yellow-300 text-black rounded-lg'
                 >

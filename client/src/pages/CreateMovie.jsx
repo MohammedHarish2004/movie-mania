@@ -87,7 +87,7 @@ export default function CreateMovie() {
             const data = await res.json()
 
             if(res.ok){
-                setGenres(data)
+                setGenres(data.genres)
             }
         }
         fetchGenres()

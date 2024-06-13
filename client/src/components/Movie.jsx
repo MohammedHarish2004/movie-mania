@@ -24,7 +24,7 @@ export default function Movie() {
         setLoading(true);
         const res = await fetch(`/api/movie/getMovie?theme=movie&page=${page}&limit=8&searchTerm=${searchTerm}&genre=${genre}`);
         const data = await res.json();
-        setMovies(data.movies,);
+        setMovies(data.movies);
         setCurrentPage(data.currentPage);
         setTotalPages(data.totalPages);
         setTotalMovies(data.totalMovies);
@@ -54,37 +54,24 @@ export default function Movie() {
                 searchTerm: searchTermFromUrl || '',
                 genre: genreFromUrl || ''
             });
-            fetchMovies(searchTermFromUrl, genreFromUrl, 1);
+            fetchMovies(searchTermFromUrl, genreFromUrl, currentPage);
         } else {
             fetchMovies();
         }
     }, []);
 
-  
-
-    const applyFilter = (genre) => {
-        setFormData({
-            ...formData,
-            genre: genre
-        });
+    const applyFilter = (selectedGenre) => {
         setIsOpen(false);
-        const urlParams = new URLSearchParams();
-        urlParams.set('genre', genre);
-        if (formData.searchTerm) {
-            urlParams.set('searchTerm', formData.searchTerm);
-        }
-        const searchQuery = urlParams.toString();
-        navigate(`/movies?theme=movie&${searchQuery}`);
-        fetchMovies(formData.searchTerm,genre,1);
+        setFormData({ ...formData, genre: selectedGenre });
+        navigate(`/movies?theme=movie&genre=${selectedGenre}`);
+        fetchMovies(formData.searchTerm, selectedGenre, currentPage);
     };
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-        const urlParams = new URLSearchParams();
-        urlParams.set('searchTerm', formData.searchTerm);
-        const searchQuery = urlParams.toString();
-        navigate(`/movies?theme=movie&${searchQuery}`)
-        fetchMovies(formData.searchTerm,1);
+        const searchQuery = formData.searchTerm.trim();
+        navigate(`/movies?theme=movie&searchTerm=${searchQuery}`)
+        fetchMovies(searchQuery,formData.genre,currentPage);
         setFormData({
             searchTerm:''
         })
@@ -114,7 +101,7 @@ export default function Movie() {
                             <button onClick={() => applyFilter('')} className='text-2xl border-b py-3'>All Movies</button>
                             {genres && genres.map((genre) => (
                                 <div key={genre._id}>
-                                    <button onClick={() => applyFilter(genre.name.toLowerCase())} className='text-2xl border-b py-3'>{genre.name}</button>
+                                    <button onClick={() => applyFilter(genre.name.toLowerCase())}  className='text-2xl border-b py-3'>{genre.name}</button>
                                 </div>
                             ))}
                         </Drawer.Items>

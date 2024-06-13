@@ -1,29 +1,55 @@
 import React, { useEffect, useState } from 'react'
-import { FaCheck, FaTimes } from 'react-icons/fa';
+import { FaCheck, FaSearch, FaTimes } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
 
 export default function DashboardMovieList() {
-
+    
+    const navigate = useNavigate()
     const [movies,setMovies] = useState('')
     const {currentUser} = useSelector(state=>state.user)
     const [currentPage,setCurrentPage] = useState(1)
     const [totalPages,setTotalPages] = useState(1)
     const [totalMovies,setTotalMovies] = useState()
-
-    const fetchMovies = async(page=1)=>{
-            const res = await fetch(`/api/movie/getMovie?page=${page}&limit=5`)
-            const data = await res.json()
-            setMovies(
-                data.movies,
-                setTotalMovies(data.totalMovies),
-                setCurrentPage(data.currentPage),
-                setTotalPages(data.totalPages)
-            )
+    const [formData,setFormData] = useState({searchTerm:''})
+    const fetchMovies = async(page=1,searchTerm='')=>{
+        const res = await fetch(`/api/movie/getMovie?page=${page}&limit=5&searchTerm=${searchTerm}`)
+        const data = await res.json()
+        setMovies(
+            data.movies,
+            setTotalMovies(data.totalMovies),
+            setCurrentPage(data.currentPage),
+            setTotalPages(data.totalPages)
+        )
         
+    }
+
+    useEffect(()=>{
+        const urlParams = new URLSearchParams(window.location.search)
+        const searchTermFromUrl = urlParams.get('searchTerm')
+
+        if(searchTermFromUrl){
+            setFormData({
+                searchTerm:searchTermFromUrl
+            })
+            fetchMovies(currentPage,searchTermFromUrl)
+        }
+        else{
+            fetchMovies()
+        }
+    },[])
+
+    const handleSearch =(e)=>{
+        e.preventDefault()
+        const searchTerm = formData.searchTerm.trim()
+        navigate(`/dashboard?tab=movie-list&searchTerm=${searchTerm}`);
+        fetchMovies(currentPage,searchTerm)
+        setFormData({
+            searchTerm:''
+        })
     }
 
     useEffect(()=>{
@@ -78,7 +104,16 @@ export default function DashboardMovieList() {
     <div className=' w-full p-7 flex flex-col gap-10'>
           <div className='overflow-auto '>
            <h1 className='text-3xl mt-3'>Movie Lists</h1>
-            <p className='text-xl font-medium my-6'>Total movies : {totalMovies}</p>
+           <div className='flex justify-between'>
+                <p className='text-xl font-medium my-6'>Total movies : {totalMovies}</p>
+                <form onSubmit={handleSearch}>
+                    <div className='flex justify-end gap-2 my-4'>
+                        <input onChange={(e)=>setFormData({...formData,searchTerm:e.target.value})} placeholder='Search...' id='search' value={formData.searchTerm} className='bg-transparent block p-2 rounded-lg w-[150px] sm:w-auto outline-none border border-yellow-300' />
+
+                        <button  className='bg-yellow-300 hover:bg-yellow-300 text-black p-2 px-2 rounded-lg font-bold transition delay-50 hover:opacity-85  disabled:opacity-80 uppercase flex items-center gap-1'><FaSearch /></button>
+                    </div>
+                </form>
+            </div>
             <table className='w-full'>
                 <thead>
                     <tr>
