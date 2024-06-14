@@ -22,7 +22,7 @@ export default function Movie() {
 
     const fetchMovies = async (searchTerm = '', genre = '',page=1) => {
         setLoading(true);
-        const res = await fetch(`/api/movie/getMovie?theme=movie&page=${page}&limit=8&searchTerm=${searchTerm}&genre=${genre}`);
+        const res = await fetch(`/api/movie/getMovie?page=${page}&limit=8&searchTerm=${searchTerm}&genre=${genre}`);
         const data = await res.json();
         setMovies(data.movies);
         setCurrentPage(data.currentPage);
@@ -83,7 +83,7 @@ export default function Movie() {
 
     if (loading) return (
         <div className="flex justify-center items-center min-h-screen">
-            <Spinner size='xl' />
+            <Spinner size='xl' color='warning'/>
         </div>
     );
 

@@ -48,13 +48,13 @@ export default function Header() {
   return (
     <Navbar  className="bg-black p-3 border-b border-slate-700 ">
       <Navbar.Brand>
-        <h1 className="flex gap-1">
+        <h1 className="flex gap-1 ms-5">
             <span className="flex  items-center gap-0.5 bg-gradient-to-r from-yellow-300 to-yellow-400 hover:bg-gradient-to-bl p-1 px-2 rounded-lg text-xl font-bold text-black"><PiFilmReelFill />Movie</span>
             <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Mania</span>
         </h1>
       </Navbar.Brand>
       
-      <div className="flex items-center gap-4 md:order-2">
+      <div className="flex items-center gap-4 md:order-2 me-5">
         <Link  to='/watch-later' className="list-none hidden md:flex font-semibold">
             <Navbar.Link  active={path === '/watch-later'} as={'div'} className={path === '/watch-later' ? 'bg-transparent font-medium hover:text-white' : ''}>
                 <span className={`text-lg ${path === '/watch-later' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white flex items-center gap-1 text-gray-400`}><PiClockClockwiseBold />Watch Later <span className="rounded-full bg-yellow-300 w-6 h-6 flex items-center justify-center text-sm text-black font-semibold">5</span></span>
@@ -63,7 +63,7 @@ export default function Header() {
        {
         currentUser ?
         (
-        <Dropdown inline arrowIcon={false} label={<Avatar img={avatar}/>} className="bg-gray-800 hover:text-black p-1 z-20">
+        <Dropdown inline arrowIcon={false} label={<Avatar img={avatar}/>} className="bg-gray-800 hover:text-black p-1 z-20 ">
           <Dropdown.Header className="text-white font-medium">
             User : {currentUser.username}
           </Dropdown.Header>
@@ -96,19 +96,10 @@ export default function Header() {
           </Link>
           <Link to='/movies?theme=movie'>
             <Navbar.Link  active={path === '/movies?theme=movie'} as={'div'} className={path === '/movies?theme=movie' ? 'bg-transparent font-medium hover:text-white' : ''} >
-                <span className={`text-lg ${path === '/movies?theme=movie' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Movies</span>
+                <span className={`text-lg ${path === '/movies?theme=movie' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Entertainment</span>
             </Navbar.Link>
           </Link>
-          <Link to='/movies?theme=anime'>
-            <Navbar.Link  active={path === '/movies?theme=anime'} as={'div'} className={path === '/movies?theme=anime' ? 'bg-transparent font-medium hover:text-white' : ''} >
-                <span className={`text-lg ${path === '/movies?theme=anime' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Animes</span>
-            </Navbar.Link>
-          </Link>
-          <Link to='/movies?theme=series'>
-            <Navbar.Link  active={path === '/movies?theme=series'} as={'div'} className={path === '/movies?theme=series' ? 'bg-transparent font-medium hover:text-white' : ''} >
-                <span className={`text-lg ${path === '/movies?theme=series' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Series</span>
-            </Navbar.Link>
-          </Link>
+        
           <Link to='/watch-later' className="md:hidden">
             <Navbar.Link  active={path === '/watch-later'} as={'div'} className={path === '/watch-later' ? 'bg-transparent font-medium hover:text-white' : ''}>
                 <span className={`text-lg ${path === '/watch-later' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white flex items-center gap-1 text-gray-400`}><PiClockClockwiseBold />Watch Later <span className="rounded-full bg-yellow-300 w-6 h-6 flex items-center justify-center text-sm text-black font-semibold">5</span></span>

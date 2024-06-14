@@ -24,6 +24,7 @@ export default function CreateMovie() {
         url:'',
         image:'',
         age:16,
+        rating:6.5,
         year:2024,
         duration:180,
         description:'',
@@ -120,6 +121,7 @@ export default function CreateMovie() {
            !formData.url?.trim() || 
            !formData.age ||  
            !formData.year ||  
+           !formData.rating ||  
            !formData.description?.trim() ||
            !formData.image 
         ){
@@ -202,7 +204,7 @@ export default function CreateMovie() {
                     </div>
                 </div>
                 <div className='flex flex-col md:flex-row gap-6 mt-7'>
-                    <div className='flex-1 flex flex-col gap-1'>
+                    <div className='flex-none flex flex-col gap-1 '>
                         <Label className='text-white text-base'>Trailer URL</Label>
                         <input
                             onChange={handleChange}
@@ -213,7 +215,7 @@ export default function CreateMovie() {
                             className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
                         />
                     </div>
-                    <div className='flex flex-col gap-1'>
+                    <div className='flex-1 flex-col gap-1 mt-1'>
                         <Label className='text-white text-base'>Age</Label>
                         <input
                             onChange={handleChange}
@@ -224,7 +226,7 @@ export default function CreateMovie() {
                             className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
                         />
                     </div>
-                    <div className='flex flex-col gap-1'>
+                    <div className='flex-1 flex-col gap-1 mt-1'>
                         <Label className='text-white text-base'>Year</Label>
                         <input
                             onChange={handleChange}
@@ -235,7 +237,18 @@ export default function CreateMovie() {
                             className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
                         />
                     </div>
-                    <div className='flex flex-col gap-1'>
+                    <div className='flex-1 flex-col gap-1 mt-1'>
+                        <Label className='text-white text-base'>Rating</Label>
+                        <input
+                            onChange={handleChange}
+                            value={formData.rating}
+                            type='text'
+                            placeholder='rating'
+                            id='rating'
+                            className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300 '
+                        />
+                    </div>
+                    <div className='flex-1 flex-col gap-1 mt-1'>
                         <Label className='text-white text-base'>Duration</Label>
                         <input
                             onChange={handleChange}
@@ -248,7 +261,7 @@ export default function CreateMovie() {
                     </div>
                 </div>
                 
-                <div className='flex flex-col md:flex-row gap-6 mt-7'>
+                <div className='flex flex-col md:flex-row gap-6 mt-8'>
                     
                     <div className='flex-1 flex flex-col gap-1'>
                         <Label className='text-white text-base'>Description</Label>

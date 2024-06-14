@@ -56,4 +56,9 @@ tr:nth-child(odd) {
 tr:nth-child(even) {
   background-color: #1f1f1f; /* Light gray background for even rows */
 }
+.owl-carousel {
+  display: flex;
+  flex-direction: row; /* Ensure the carousel is always in a row layout */
+  /* Add other necessary styles */
+}
 

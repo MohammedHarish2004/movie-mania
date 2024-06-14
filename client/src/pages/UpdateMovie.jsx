@@ -221,44 +221,55 @@ export default function UpdateMovie() {
                     </div>
                 </div>
                 <div className='flex flex-col md:flex-row gap-6 mt-7'>
-                    <div className='flex-1 flex flex-col gap-1'>
+                    <div className='flex-none flex flex-col gap-1 '>
                         <Label className='text-white text-base'>Trailer URL</Label>
                         <input
                             onChange={handleChange}
-                            value={formData.url || ''}
+                            value={formData.url}
                             placeholder='trailer url'
                             id='url'
                             type='text'
                             className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
                         />
                     </div>
-                    <div className='flex flex-col gap-1'>
+                    <div className='flex-1 flex-col gap-1 mt-1'>
                         <Label className='text-white text-base'>Age</Label>
                         <input
                             onChange={handleChange}
-                            value={formData.age || ''}
+                            value={formData.age}
                             type='number'
                             placeholder='age'
                             id='age'
                             className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
                         />
                     </div>
-                    <div className='flex flex-col gap-1'>
+                    <div className='flex-1 flex-col gap-1 mt-1'>
                         <Label className='text-white text-base'>Year</Label>
                         <input
                             onChange={handleChange}
-                            value={formData.year || ''}
+                            value={formData.year}
                             type='number'
                             placeholder='year'
                             id='year'
                             className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
                         />
                     </div>
-                    <div className='flex flex-col gap-1'>
+                    <div className='flex-1 flex-col gap-1 mt-1'>
+                        <Label className='text-white text-base'>Rating</Label>
+                        <input
+                            onChange={handleChange}
+                            value={formData.rating}
+                            type='text'
+                            placeholder='rating'
+                            id='rating'
+                            className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300'
+                        />
+                    </div>
+                    <div className='flex-1 flex-col gap-1 mt-1'>
                         <Label className='text-white text-base'>Duration</Label>
                         <input
                             onChange={handleChange}
-                            value={formData.duration || ''}
+                            value={formData.duration}
                             type='text'
                             placeholder='duration'
                             id='duration'

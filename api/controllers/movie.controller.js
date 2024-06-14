@@ -30,7 +30,9 @@ export const getMovie = async(req,res,next)=>{
             ...(req.query.genre && {genre:req.query.genre}),
             ...(req.query.theme && {theme:req.query.theme}),
             ...(req.query.movieId && {_id:req.query.movieId}),
-            ...(req.query.searchTerm)&&{name:{$regex:req.query.searchTerm,$options:'i'}}
+            ...(req.query.searchTerm)&&
+            {$or:[{name:{$regex:req.query.searchTerm,$options:'i'}}
+                ,{theme:{$regex:req.query.searchTerm,$options:'i'}}]}
         }
         const movies = await Movie.find(filter).sort({updatedAt:sort}).skip(skip).limit(limit)
 

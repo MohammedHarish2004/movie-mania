@@ -13,6 +13,8 @@ import WatchLater from './pages/WatchLater.jsx'
 import FooterCom from './components/FooterComp.jsx'
 import UpdateMovie from './pages/UpdateMovie.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
+import MoviePage from './pages/MoviePage.jsx'
+import $ from 'jquery';
 
 export default function App() {
   return (
@@ -24,6 +26,7 @@ export default function App() {
       <Route path='/movies' element={<Movies />}/>
       <Route path='/sign-in' element={<SignIn />}/>
       <Route path='/sign-up' element={<SignUp />}/>
+      <Route path='/details/:movieId' element={<MoviePage />}/>
       <Route path='/watch-later' element={<WatchLater />}/>
       <Route element={<PrivateRoute />}>
         <Route path='/dashboard' element={<Dashboard />}/>
