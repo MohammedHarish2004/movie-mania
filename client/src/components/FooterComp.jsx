@@ -22,19 +22,8 @@ export default function FooterCom() {
             <Footer.Title title='Quick Links' className='text-gray-400'/>
             <Footer.LinkGroup col className='hover:focus:text-white'>
               <Link  to='/movies?theme=movie' >
-                <span  className='text-white hover:text-yellow-300'>Movies</span>
+                <span  className='text-white hover:text-yellow-300'>Entertainment</span>
               </Link>
-              <Link  to='/movies?theme=anime' >
-                <span  className='text-white hover:text-yellow-300'>Animes</span>
-              </Link>
-              <Link  to='/movies?theme=series' >
-                <span  className='text-white hover:text-yellow-300'>Series</span>
-              </Link>
-            </Footer.LinkGroup>
-          </div>
-          <div>
-            <Footer.Title title='Account Info' className='text-gray-400'/>
-            <Footer.LinkGroup col className='hover:focus:text-white'>
               <Link to='/dashboard?tab=profile' >
                 <span  className='text-white hover:text-yellow-300'>Dashboard</span>
               </Link>
@@ -43,6 +32,7 @@ export default function FooterCom() {
               </Link>
             </Footer.LinkGroup>
           </div>
+          
           <div>
             <Footer.Title title='Follow us' className='text-gray-400'/>
             <Footer.LinkGroup col>

@@ -33,7 +33,7 @@ export default function MovieCard({movie,loading}) {
                     <p className='flex items-center gap-1 text-sm truncate md:text-base'><span>{movie.age}+ </span></p>
                     <p className='flex items-center gap-1 text-sm truncate md:text-base'><span>{movie.rating ? movie.rating : '7.5'} </span></p>
                     <p className='flex items-center gap-1 text-sm truncate md:text-base'><FaCalendar /><span>{movie.year} </span></p>
-                    <p className='flex items-center gap-1 text-sm truncate md:text-base'><FaClock /><span>{movie.theme === 'movie' ?  movie.duration + ' mins' :  movie.duration + ''} </span></p>
+                    <p className='flex items-center gap-1 text-sm truncate md:text-base'><FaClock /><span>{movie.theme === 'movie' ?  movie.duration + ' mins' :  movie.duration + '+'} </span></p>
                 </div>
             </div>
         </Link>

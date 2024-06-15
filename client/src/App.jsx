@@ -15,6 +15,8 @@ import UpdateMovie from './pages/UpdateMovie.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import MoviePage from './pages/MoviePage.jsx'
 import $ from 'jquery';
+import About from './pages/About.jsx'
+import PlayMovie from './pages/PlayMovie.jsx'
 
 export default function App() {
   return (
@@ -26,7 +28,9 @@ export default function App() {
       <Route path='/movies' element={<Movies />}/>
       <Route path='/sign-in' element={<SignIn />}/>
       <Route path='/sign-up' element={<SignUp />}/>
+      <Route path='/about' element={<About />}/>
       <Route path='/details/:movieId' element={<MoviePage />}/>
+      <Route path='/view' element={<PlayMovie />}/>
       <Route path='/watch-later' element={<WatchLater />}/>
       <Route element={<PrivateRoute />}>
         <Route path='/dashboard' element={<Dashboard />}/>

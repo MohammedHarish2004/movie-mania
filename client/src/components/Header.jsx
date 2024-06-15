@@ -99,6 +99,11 @@ export default function Header() {
                 <span className={`text-lg ${path === '/movies?theme=movie' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Entertainment</span>
             </Navbar.Link>
           </Link>
+          <Link to='/about'>
+            <Navbar.Link  active={path === '/about'} as={'div'} className={path === '/about' ? 'bg-transparent font-medium hover:text-white' : ''} >
+                <span className={`text-lg ${path === '/about' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white text-gray-400`}>Overview</span>
+            </Navbar.Link>
+          </Link>
         
           <Link to='/watch-later' className="md:hidden">
             <Navbar.Link  active={path === '/watch-later'} as={'div'} className={path === '/watch-later' ? 'bg-transparent font-medium hover:text-white' : ''}>

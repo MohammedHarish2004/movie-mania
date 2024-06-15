@@ -75,16 +75,20 @@ export default function MoviePage() {
                         </div>
                         <div className='mt-3 ms-1 flex gap-3'>
                             <span className='text-gray-400 text-xl'>{movie.year}</span>
-                            <span className='text-gray-400 text-xl'>{movie.duration} mins</span>
+                            <span className='text-gray-400 text-xl'>{movie.theme === 'movie' ?  movie.duration + ' mins' :  movie.duration + '+'}</span>
                             <span className='text-gray-400 text-sm border border-gray-400 p-1'>{movie.age}+</span>
                         </div>
                         <div>
                             <p className='text-center text-base md:text-start md:text-lg md:px-0 sm:max-w-sm lg:max-w-xl lg:text-xl  mt-2'>{movie.description}</p>
                         </div>
                         <div className='flex gap-7 mt-4 md:mt-2'>
-                            <button className=' bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-80 mt-3 uppercase px-4 text-xs sm:text-base' >
-                                Play trailer
-                            </button>
+                        <Link 
+                        to={`/view?movieUrl=${encodeURIComponent(movie.url)}`} 
+                        className='bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-80 mt-3 uppercase px-4 text-xs sm:text-base'
+                        >
+                        Play trailer
+                        </Link>
+
                             <button className=' border-2 border-yellow-300 hover:bg-yellow-300 hover:text-black font-bold text-white p-2 rounded-lg transition delay-50  mt-3 uppercase flex gap-2 items-center justify-center px-4 text-xs sm:text-base' >
                                 Watchlist <FaPlus />
                             </button>
