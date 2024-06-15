@@ -88,7 +88,7 @@ export default function Movie() {
     );
 
     return (
-        <div className='max-w-full flex flex-wrap justify-center items-center mx-auto sm:justify-center gap-4 p-7'>
+        <div className='max-w-full flex flex-wrap justify-center items-center mx-auto sm:justify-center md:justify-start lg:justify-start  gap-4 p-7'>
             <div className='container '>
                 <h1 className='text-3xl sm:text-4xl w-full'>{title ? title : 'All'} Movies</h1>
                 <div className='flex justify-between gap-1 mt-6'>
@@ -102,10 +102,12 @@ export default function Movie() {
                     </form>
                     <Drawer open={isOpen} onClose={handleClose} className='bg-black text-white'>
                         <Drawer.Header title="Filter" />
-                        <Drawer.Items>
-                            <button onClick={() => applyFilter('')} className='text-xl py-3'>All Movies</button>
+                        <Drawer.Items >
+                            <div className='border-b'>
+                                <button onClick={() => applyFilter('')} className='text-xl py-3'>All Movies</button>
+                            </div>
                             {genres && genres.map((genre) => (
-                                <div key={genre._id}>
+                                <div key={genre._id} className='border-b'>
                                     <button onClick={() => applyFilter(genre.name.toLowerCase())}  className='text-xl  py-3'>{genre.name}</button>
                                 </div>
                             ))}

@@ -35,7 +35,7 @@ export default function MoviePage() {
     useEffect(() => {
         if (relatedMovie.length > 0) {
             $('.owl-carousel').owlCarousel({
-                loop: false,
+                loop: true,
                 autoplay: true,
                 autoplayTimeout: 2000, // Autoplay interval in milliseconds
                 autoplayHoverPause: true, 
@@ -104,18 +104,20 @@ export default function MoviePage() {
             }
 
            <div className='mt-2'>
-            <h1 className='text-2xl md:text-3xl my-5'>Related Movies</h1>
+            <h1 className='text-2xl md:text-3xl my-3'>Related Movies</h1>
                 <div className='owl-carousel'>
                     {relatedMovie.length > 0 ?
                     relatedMovie.map((movie) => (
-                        <Link to={`/details/${movie._id}`} className='item' key={movie._id}>
-                            <img src={movie.image} alt="movie poster" className='object-contain'/>
-                            <div className='bg-black p-2'>
-                                <h1 className='font-medium truncate'>{movie.name} | {movie.theme}</h1>
-                                <div className='flex gap-2 text-gray-500 text-sm font-medium truncate'>
-                                    <span>IMdb {movie.rating ? movie.rating : '7.5'}</span>
-                                    <span>{movie.year}</span>
-                                    <span>{movie.age}+</span>
+                        <Link to={`/details/${movie._id}`} key={movie._id}>
+                            <div className='item' >
+                                <img src={movie.image} alt="movie poster" className='h-[225px] md:h-[220px] lg:h-[300px] '/>
+                                <div className='bg-black p-2'>
+                                    <h1 className='font-medium truncate'>{movie.name} | {movie.theme}</h1>
+                                    <div className='flex gap-2 text-gray-500 text-sm font-medium truncate'>
+                                        <span>IMdb {movie.rating ? movie.rating : '7.5'}</span>
+                                        <span>{movie.year}</span>
+                                        <span>{movie.age}+</span>
+                                    </div>
                                 </div>
                             </div>
                         </Link>

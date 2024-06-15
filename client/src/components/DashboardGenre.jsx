@@ -37,7 +37,7 @@ export default function DashboardGenre() {
     
     // Get Genre
     const fetchGenres = async (page = 1,searchTerm='') => {
-        const res = await fetch(`/api/genre/getGenre?page=${page}&limit=5&searchTerm=${searchTerm}`);
+        const res = await fetch(`/api/genre/getGenre?page=${page}&limit=8&searchTerm=${searchTerm}`);
         const data = await res.json();
         if (res.ok) {
             setGenres(data.genres);
@@ -168,7 +168,7 @@ export default function DashboardGenre() {
            
                 <h1 className='text-3xl mt-3'>Genre Lists</h1>
                 <div className='flex justify-between'>
-                    <p className='text-xl font-medium my-6'>Total genres : {totalGenres}</p>
+                    <p className='text-lg font-medium my-6'>Total genres : {totalGenres}</p>
                     <form onSubmit={handleSearch} autoComplete='off'>
                         <div className='flex justify-end gap-2 my-4'>
                             <input onChange={(e)=>setFormData({...formData,searchTerm:e.target.value})} placeholder='Search...' id='search' value={formData.searchTerm} className='bg-transparent block p-2 rounded-lg w-[150px] sm:w-auto outline-none border border-yellow-300' />
@@ -211,7 +211,7 @@ export default function DashboardGenre() {
             </div>
     
             {/* Pagination Controls */}
-            <div className='flex justify-between items-center mt-4'>
+            <div className='flex justify-center gap-5 items-center mt-4'>
                 <button 
                     onClick={() => fetchGenres(currentPage - 1)} 
                     disabled={currentPage === 1} 

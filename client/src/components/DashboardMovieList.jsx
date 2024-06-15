@@ -15,8 +15,9 @@ export default function DashboardMovieList() {
     const [totalPages,setTotalPages] = useState(1)
     const [totalMovies,setTotalMovies] = useState()
     const [formData,setFormData] = useState({searchTerm:''})
+    
     const fetchMovies = async(page=1,searchTerm='')=>{
-        const res = await fetch(`/api/movie/getMovie?page=${page}&limit=5&searchTerm=${searchTerm}`)
+        const res = await fetch(`/api/movie/getMovie?limit=8&page=${page}&limit=5&searchTerm=${searchTerm}`)
         const data = await res.json()
         setMovies(
             data.movies,

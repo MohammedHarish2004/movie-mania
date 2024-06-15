@@ -222,7 +222,7 @@ export default function UpdateMovie() {
                 </div>
                 <div className='flex flex-col md:flex-row gap-6 mt-7'>
                     <div className='flex-none flex flex-col gap-1 '>
-                        <Label className='text-white text-base'>Trailer URL</Label>
+                        <Label className='text-white text-base'>URL</Label>
                         <input
                             onChange={handleChange}
                             value={formData.url}
