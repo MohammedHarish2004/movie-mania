@@ -8,15 +8,19 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { signOutSuccess } from "../redux/User/userSlice";
 import { FaSignOutAlt, FaUserAlt } from "react-icons/fa";
+import { setWatchlist } from "../redux/Watchlist/watchlistSlice";
+import { useEffect } from "react";
 
 export default function Header() {
     const location = useLocation()
     const path = location.pathname + location.search
     const {currentUser} = useSelector(state=>state.user)
-
+    const watchlist = useSelector((state) => state.watchlist.items) || []; 
     const navigate = useNavigate()
     const dispatch = useDispatch()
     
+
+
     const handleLogout = ()=>{
       Swal.fire({
         title: 'Are you sure?',
@@ -49,15 +53,15 @@ export default function Header() {
     <Navbar  className="bg-black p-3 border-b border-slate-700 ">
       <Navbar.Brand>
         <h1 className="flex gap-1 ms-5">
-            <span className="flex  items-center gap-0.5 bg-gradient-to-r from-yellow-300 to-yellow-400 hover:bg-gradient-to-bl p-1 px-2 rounded-lg text-xl font-bold text-black"><PiFilmReelFill />Movie</span>
-            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Mania</span>
+            <span className="flex  items-center gap-0.5 bg-gradient-to-r from-yellow-300 to-yellow-400 hover:bg-gradient-to-bl p-1 px-2 rounded-lg text-lg sm:text-xl font-bold text-black"><PiFilmReelFill />Movie</span>
+            <span className="self-center whitespace-nowrap text-lg sm:text-xl font-semibold dark:text-white">Mania</span>
         </h1>
       </Navbar.Brand>
       
       <div className="flex items-center gap-4 md:order-2 me-5">
         <Link  to='/watch-later' className="list-none hidden md:flex font-semibold">
             <Navbar.Link  active={path === '/watch-later'} as={'div'} className={path === '/watch-later' ? 'bg-transparent font-medium hover:text-white' : ''}>
-                <span className={`text-lg ${path === '/watch-later' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white flex items-center gap-1 text-gray-400`}><PiClockClockwiseBold />Watch Later <span className="rounded-full bg-yellow-300 w-6 h-6 flex items-center justify-center text-sm text-black font-semibold">5</span></span>
+                <span className={`text-lg ${path === '/watch-later' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white flex items-center gap-1 text-gray-400`}><PiClockClockwiseBold />Watchlist <span className="rounded-full bg-yellow-300 w-6 h-6 flex items-center justify-center text-sm text-black font-semibold">{currentUser && !watchlist.length ? 0 : watchlist.length }</span></span>
             </Navbar.Link>
         </Link>
        {
@@ -107,7 +111,7 @@ export default function Header() {
         
           <Link to='/watch-later' className="md:hidden">
             <Navbar.Link  active={path === '/watch-later'} as={'div'} className={path === '/watch-later' ? 'bg-transparent font-medium hover:text-white' : ''}>
-                <span className={`text-lg ${path === '/watch-later' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white flex items-center gap-1 text-gray-400`}><PiClockClockwiseBold />Watch Later <span className="rounded-full bg-yellow-300 w-6 h-6 flex items-center justify-center text-sm text-black font-semibold">5</span></span>
+                <span className={`text-lg ${path === '/watch-later' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white flex items-center gap-1 text-gray-400`}><PiClockClockwiseBold />Watchlist <span className="rounded-full bg-yellow-300 w-6 h-6 flex items-center justify-center text-sm text-black font-semibold">{currentUser && !watchlist.length ? 0 : watchlist.length }</span></span>
             </Navbar.Link>
           </Link>
       </Navbar.Collapse>

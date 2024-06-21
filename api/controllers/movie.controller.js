@@ -1,4 +1,5 @@
 import Movie from "../models/movie.model.js"
+import User from "../models/user.model.js"
 import { errorHandler } from "../utils/error.js"
 
 export const createMovie = async(req,res,next)=>{
@@ -78,3 +79,70 @@ export const editMovie = async(req,res,next)=>{
         }
 }
 
+export const addToWatchlist = async (req, res, next) => {
+    try {
+        const { movieId } = req.body;
+        const userId = req.user.id;
+
+        // Find the user by ID
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if the movie is already in the watchlist
+        if (user.watchlist.includes(movieId)) {
+            return res.status(400).json({ message: 'Movie already in watchlist' });
+        }
+
+        // Add the movie to the user's watchlist
+        user.watchlist.push(movieId);
+        await user.save();
+
+        res.status(200).json({ success: true, message: 'Movie added to watchlist' });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const getWatchlist = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user.id).populate('watchlist');
+        if (!user) {
+            return next(errorHandler(404, 'User not found'));
+        }
+        res.status(200).json({ movies: user.watchlist });
+    } catch (error) {
+        next(error);
+    }
+};
+
+    // Delete a movie from the watchlist
+    export const deleteFromWatchlist = async (req, res, next) => {
+        try {
+            const { movieId } = req.body;
+            const userId = req.user.id;
+
+            // Find the user by ID
+            const user = await User.findById(userId);
+
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            // Check if the movie is in the watchlist
+            if (!user.watchlist.includes(movieId)) {
+                return res.status(400).json({ message: 'Movie not in watchlist' });
+            }
+
+            // Remove the movie from the user's watchlist
+            user.watchlist = user.watchlist.filter(id => id.toString() !== movieId);
+            await user.save();
+
+            res.status(200).json({ success: true, message: 'Movie removed from watchlist' });
+        } catch (error) {
+            next(error);
+        }
+    };

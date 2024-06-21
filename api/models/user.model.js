@@ -18,7 +18,13 @@ const userSchema = new mongoose.Schema({
     isAdmin:{
         type:Boolean,
         default:false
-    }
+    },
+     watchlist: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Movie'
+        }
+    ]
 },{timestamps:true})
 
 const User = mongoose.model('User',userSchema)

@@ -266,7 +266,7 @@ export default function UpdateMovie() {
                         />
                     </div>
                     <div className='flex-1 flex-col gap-1 mt-1'>
-                        <Label className='text-white text-base'>Duration</Label>
+                        <Label className='text-white text-base'>{formData.theme === 'movie' ? 'Duration' : 'Seasons'}</Label>
                         <input
                             onChange={handleChange}
                             value={formData.duration}
