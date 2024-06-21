@@ -10,7 +10,7 @@ import { MdMovie } from 'react-icons/md';
 
 export default function WatchLater() {
     const [loading, setLoading] = useState(false);
-    const watchlist = useSelector((state) => state.watchlist.items);
+    const watchlist = useSelector((state) => state.watchlist.items) || [];
     const dispatch = useDispatch();
     const {currentUser} = useSelector(state=>state.user)
 

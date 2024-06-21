@@ -19,7 +19,24 @@ export default function Header() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     
-
+    useEffect(() => {
+      const fetchWatchlistMovies = async () => {
+          if (currentUser) {
+              try {
+                  const res = await fetch('/api/movie/getWatchlist', {
+                      headers: {
+                          'Content-Type': 'application/json',
+                      }
+                  });
+                  const data = await res.json();
+                  dispatch(setWatchlist(data.movies));
+              } catch (error) {
+                  console.error('Error fetching watchlist movies:', error);
+              }
+          }
+      };
+      fetchWatchlistMovies();
+  }, [currentUser, dispatch]);
 
     const handleLogout = ()=>{
       Swal.fire({
@@ -61,7 +78,7 @@ export default function Header() {
       <div className="flex items-center gap-4 md:order-2 me-5">
         <Link  to='/watch-later' className="list-none hidden md:flex font-semibold">
             <Navbar.Link  active={path === '/watch-later'} as={'div'} className={path === '/watch-later' ? 'bg-transparent font-medium hover:text-white' : ''}>
-                <span className={`text-lg ${path === '/watch-later' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white flex items-center gap-1 text-gray-400`}><PiClockClockwiseBold />Watchlist <span className="rounded-full bg-yellow-300 w-6 h-6 flex items-center justify-center text-sm text-black font-semibold">{currentUser && !watchlist.length ? 0 : watchlist.length }</span></span>
+                <span className={`text-lg ${path === '/watch-later' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white flex items-center gap-1 text-gray-400`}><PiClockClockwiseBold />Watchlist <span className="rounded-full bg-yellow-300 w-6 h-6 flex items-center justify-center text-sm text-black font-semibold">{currentUser && !watchlist ? 0 : watchlist.length }</span></span>
             </Navbar.Link>
         </Link>
        {
@@ -111,7 +128,7 @@ export default function Header() {
         
           <Link to='/watch-later' className="md:hidden">
             <Navbar.Link  active={path === '/watch-later'} as={'div'} className={path === '/watch-later' ? 'bg-transparent font-medium hover:text-white' : ''}>
-                <span className={`text-lg ${path === '/watch-later' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white flex items-center gap-1 text-gray-400`}><PiClockClockwiseBold />Watchlist <span className="rounded-full bg-yellow-300 w-6 h-6 flex items-center justify-center text-sm text-black font-semibold">{currentUser && !watchlist.length ? 0 : watchlist.length }</span></span>
+                 <span className={`text-lg ${path === '/watch-later' ? 'text-yellow-300 hover:text-white' : ''}hover:text-white flex items-center gap-1 text-gray-400`}><PiClockClockwiseBold />Watchlist <span className="rounded-full bg-yellow-300 w-6 h-6 flex items-center justify-center text-sm text-black font-semibold">{currentUser && !watchlist ? 0 : watchlist.length }</span></span>
             </Navbar.Link>
           </Link>
       </Navbar.Collapse>
