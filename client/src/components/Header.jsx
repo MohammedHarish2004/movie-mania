@@ -69,7 +69,7 @@ export default function Header() {
   return (
     <Navbar  className="bg-black p-3 border-b border-slate-700 ">
       <Navbar.Brand>
-        <h1 className="flex gap-1 ms-5">
+        <h1 className="flex gap-1 ms-0 sm:ms-5">
             <span className="flex  items-center gap-0.5 bg-gradient-to-r from-yellow-300 to-yellow-400 hover:bg-gradient-to-bl p-1 px-2 rounded-lg text-lg sm:text-xl font-bold text-black"><PiFilmReelFill />Movie</span>
             <span className="self-center whitespace-nowrap text-lg sm:text-xl font-semibold dark:text-white">Mania</span>
         </h1>
@@ -102,7 +102,7 @@ export default function Header() {
         :
         (
         <Link to='/sign-in'>
-            <button className="bg-transparent border-2 border-yellow-300 hover:bg-yellow-300 hover:text-black transition delay-50 p-1.5 px-3 rounded-lg  font-semibold">Sign In</button>
+            <button className="bg-transparent border-2 border-yellow-300 hover:bg-yellow-300 hover:text-black transition delay-50  p-1 px-2 sm:p-1.5 sm:px-3 rounded-lg  font-semibold ">Sign In</button>
         </Link>
         )
        }
