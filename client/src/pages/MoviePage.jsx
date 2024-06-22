@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import { IoArrowBack } from "react-icons/io5";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setWatchlist } from '../redux/Watchlist/watchlistSlice';
 
 export default function MoviePage() {
@@ -14,6 +14,7 @@ export default function MoviePage() {
     const [relatedMovie, setRelatedMovie] = useState([]);
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch()
+    const {currentUser} = useSelector(state=>state.user)
 
     useEffect(() => {
         fetchMovies();
@@ -126,15 +127,27 @@ export default function MoviePage() {
                             <p className='text-center text-base md:text-start md:text-lg md:px-0 sm:max-w-sm lg:max-w-xl lg:text-xl  mt-2'>{movie.description}</p>
                         </div>
                         <div className='flex gap-7 mt-4 md:mt-2'>
+                            <div className='flex flex-col sm:flex-row gap-2'>
                             <Link 
                             to={`/view?movieUrl=${encodeURIComponent(movie.url)}`} 
-                            className='border-2 border-black bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-80 mt-3 uppercase px-4 text-xs sm:text-base'
+                            className='border-2 border-black bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-80 mt-3 uppercase px-4 text-xs sm:text-base text-center w-full'
                             >
                             Play trailer
                             </Link>
-                            <button onClick={addToWatchlist} className=' border-2 border-yellow-300 hover:bg-yellow-300 hover:text-black font-bold text-white p-2 rounded-lg transition delay-50  mt-3 uppercase flex gap-2 items-center justify-center px-4 text-xs sm:text-base' >
-                                Watchlist <FaPlus />
-                            </button>
+                            {currentUser ? 
+                                (
+                                <button onClick={addToWatchlist} className='w-full border-2 border-yellow-300 hover:bg-yellow-300 hover:text-black font-bold text-white p-2 rounded-lg transition delay-50  mt-3 uppercase flex gap-2 items-center justify-center px-4 text-xs sm:text-base' >
+                                    Watchlist <FaPlus />
+                                </button>
+                            )
+                            :
+                            (
+                                <Link to='/sign-in' className=' border-2 border-yellow-300 hover:bg-yellow-300 hover:text-black font-bold text-white p-2 rounded-lg transition delay-50  mt-3 uppercase flex gap-2 items-center justify-center px-4 text-xs sm:text-base' >
+                                    Sign In to Add to watchlist<FaPlus />
+                                </Link>
+                            )
+                            }
+                            </div>
                         </div>
                     </div>
                     <div>
