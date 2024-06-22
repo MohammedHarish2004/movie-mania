@@ -66,7 +66,10 @@ export default function WatchLater() {
     return (
         <div className="max-w-full mx-auto p-7 md:py-10 min-h-screen">
             <h1 className="text-3xl md:text-4xl mb-5 mx-3">Watchlist</h1>
-            <div className="flex justify-center items-center flex-wrap lg:justify-start sm:flex-row gap-6">
+            {
+                currentUser ? 
+                (
+                    <div className="flex justify-center items-center flex-wrap lg:justify-start sm:flex-row gap-6">
                 {watchlist.length > 0 ? watchlist.map(movie => (
                     <div key={movie._id} className="shadow-md rounded-lg overflow-hidden relative group">
                         <button
@@ -91,7 +94,14 @@ export default function WatchLater() {
                         </Link>
                     </div>
                 )) : <span className='text-center mx-auto text-3xl'>No movies in your watchlist</span>}
-            </div>
+                    </div>
+                )
+                :
+                (
+                    <span className='flex justify-center text-center text-3xl'><Link  to='/sign-in' className='text-yellow-300 me-2 hover:underline'>Login</Link>to see this feature</span>
+                )
+
+            }
         </div>
     );
 }
