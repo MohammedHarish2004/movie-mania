@@ -6,6 +6,8 @@ import DashboardGenre from '../components/DashboardGenre'
 import { useSelector } from 'react-redux'
 import CreateMovie from './CreateMovie'
 import DashboardMovieList from '../components/DashboardMovieList'
+import CreateSlider from './CreateSlider'
+import DashboardSliderList from '../components/DashboardSliderList'
 
 export default function Dashboard() {
 
@@ -36,6 +38,12 @@ export default function Dashboard() {
     
     {/* Movie list  */}
     {currentUser.isAdmin && tab === 'movie-list' && <DashboardMovieList />}
+    
+    {/* Slider */}
+    {currentUser.isAdmin && tab === 'create-slider' && <CreateSlider />}
+    
+    {/* Slider list  */}
+    {currentUser.isAdmin && tab === 'slider-list' && <DashboardSliderList />}
     </div>
   )
 }

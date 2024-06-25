@@ -12,6 +12,7 @@ import AdminPrivateRoute from './components/AdminPrivateRoute.jsx'
 import WatchLater from './pages/WatchLater.jsx'
 import FooterCom from './components/FooterComp.jsx'
 import UpdateMovie from './pages/UpdateMovie.jsx'
+import UpdateSlider from './pages/UpdateSlider.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import MoviePage from './pages/MoviePage.jsx'
 import $ from 'jquery';
@@ -37,6 +38,7 @@ export default function App() {
       </Route>
       <Route element={<AdminPrivateRoute />}>
         <Route path='/edit-movie/:movieId' element={ <UpdateMovie />}/>
+        <Route path='/edit-slider/:sliderId' element={ <UpdateSlider />}/>
       </Route>
       <Route path='*' element={<Missing />}/>
     </Routes>

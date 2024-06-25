@@ -6,60 +6,64 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
 
-export default function DashboardMovieList() {
+export default function DashboardSliderList() {
     
     const navigate = useNavigate()
-    const [movies,setMovies] = useState('')
+    const [sliders,setSliders] = useState('')
     const {currentUser} = useSelector(state=>state.user)
+    const [formData,setFormData] = useState({searchTerm:''})
     const [currentPage,setCurrentPage] = useState(1)
     const [totalPages,setTotalPages] = useState(1)
-    const [totalMovies,setTotalMovies] = useState()
-    const [formData,setFormData] = useState({searchTerm:''})
-    
-    const fetchMovies = async(page=1,searchTerm='')=>{
-        const res = await fetch(`/api/movie/getMovie?limit=8&page=${page}&searchTerm=${searchTerm}`)
+    const [totalSliders,setTotalSliders] = useState()
+
+    const fetchSliders = async(page=1,searchTerm='')=>{
+
+        const res = await fetch(`/api/slider/getSlider?limit=8&page=${page}&searchTerm=${searchTerm}`)
         const data = await res.json()
-        setMovies(
-            data.movies,
-            setTotalMovies(data.totalMovies),
+        setSliders(
+            data.sliders,
+            setTotalSliders(data.totalSliders),
             setCurrentPage(data.currentPage),
             setTotalPages(data.totalPages)
-        )
-        
+        ) 
     }
 
-    useEffect(()=>{
-        const urlParams = new URLSearchParams(window.location.search)
-        const searchTermFromUrl = urlParams.get('searchTerm')
 
-        if(searchTermFromUrl){
+    // Handle search
+    useEffect(()=>{
+
+        const urlParams = new URLSearchParams(window.location.search)
+        const searchTermFromURL = urlParams.get('searchTerm')
+
+        if(searchTermFromURL){
             setFormData({
-                searchTerm:searchTermFromUrl
+                searchTerm:searchTermFromURL
             })
-            fetchMovies(currentPage,searchTermFromUrl)
+            fetchSliders(currentPage,searchTermFromURL)
         }
         else{
-            fetchMovies()
+            fetchSliders()
         }
     },[])
 
-    const handleSearch =(e)=>{
+    // Search submit
+
+    const handleSearch = (e)=>{
         e.preventDefault()
         const searchTerm = formData.searchTerm.trim()
-        navigate(`/dashboard?tab=movie-list&searchTerm=${searchTerm}`);
-        fetchMovies(currentPage,searchTerm)
+        navigate(`/dashboard?tab=slider-list&searchTerm=${searchTerm}`)
+        fetchSliders(currentPage,searchTerm)
         setFormData({
             searchTerm:''
         })
     }
 
     useEffect(()=>{
-    
         if(currentUser.isAdmin){
-            fetchMovies()
+            fetchSliders()    
         }
-
     },[currentUser])
+
 
      // Delete Genre
      const handleDelete = async(movieId,movieName)=>{
@@ -78,7 +82,7 @@ export default function DashboardMovieList() {
 
                 try {
                     
-                    const res = await fetch(`/api/movie/deleteMovie/${movieId}`,{
+                    const res = await fetch(`/api/slider/deleteSlider/${movieId}`,{
                         method:"DELETE"
                     })
     
@@ -89,8 +93,9 @@ export default function DashboardMovieList() {
                     }
 
                     if(res.ok){
-                        toast.success('Movie deleted successfully',{ autoClose: 1000 })
-                        setMovies(prev=>prev.filter((movie)=>movie._id !== movieId))
+                        toast.success('Slider deleted successfully',{ autoClose: 1000 })
+                        setSliders(prev=>prev.filter((movie)=>movie._id !== movieId))
+                        fetchSliders()
                     }
 
                 } 
@@ -104,13 +109,12 @@ export default function DashboardMovieList() {
   return (
     <div className=' w-full p-7 flex flex-col gap-10'>
           <div className='overflow-auto '>
-           <h1 className='text-3xl mt-3'>Movie Lists</h1>
+           <h1 className='text-3xl mt-3'>Slider Lists</h1>
            <div className='flex justify-between'>
-                <p className='text-xl font-medium my-6'>Total movies : {totalMovies}</p>
+                <p className='text-xl font-medium my-6'>Total sliders : {totalSliders}</p>
                 <form onSubmit={handleSearch} autoComplete='off'>
                     <div className='flex justify-end gap-2 my-4'>
                         <input onChange={(e)=>setFormData({...formData,searchTerm:e.target.value})} placeholder='Search...' id='search' value={formData.searchTerm} className='bg-transparent block p-2 rounded-lg w-[150px] sm:w-auto outline-none border border-yellow-300' />
-
                         <button  className='bg-yellow-300 hover:bg-yellow-300 text-black p-2 px-2 rounded-lg font-bold transition delay-50 hover:opacity-85  disabled:opacity-80 uppercase flex items-center gap-1'><FaSearch /></button>
                     </div>
                 </form>
@@ -122,29 +126,25 @@ export default function DashboardMovieList() {
                         <th>Genre</th>
                         <th>Theme</th>
                         <th>Image</th>
-                        <th>Trending</th>
-                        <th>New Release</th>
                         <th colSpan='2'>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        movies && movies.length > 0 ?
-                        movies.map((movie)=>(
+                        sliders && sliders.length > 0 ?
+                        sliders.map((movie)=>(
                             <tr key={movie._id} >
-                                <td className='max-w-40 truncate hover:underline'><Link to={`/details/${movie._id}`}>{movie.name}</Link></td>
+                                <td className='max-w-40 truncate'>{movie.name}</td>
                                 <td className='capitalize'>{movie.genre}</td>
                                 <td className='capitalize'>{movie.theme}</td>
-                                <td><Link to={`/details/${movie._id}`}><img src={movie.image} alt="movie poster" className='w-full h-20 object-contain'/></Link></td>
-                                <td align='center'>{movie.trending ? <FaCheck className='text-green-400 flex justify-center'/> : <FaTimes className='text-red-600'/>}</td>
-                                <td>{movie.newRelease ? <FaCheck className='text-green-400'/> : <FaTimes className='text-red-600'/>}</td>
-                                <td><Link to={`/edit-movie/${movie._id}`}  className='text-green-400'>Edit</Link></td>
+                                <td><img src={movie.image} alt="movie poster" className='w-full h-20 object-contain'/></td>
+                                <td><Link to={`/edit-slider/${movie._id}`}  className='text-green-400'>Edit</Link></td>
                                 <td><button onClick={()=>handleDelete(movie._id,movie.name)} className='text-red-600'>Delete</button></td>
                             </tr>
                         ))
                         :
                             <tr>
-                                <td colSpan='10' align='center'>No movies found!</td>
+                                <td colSpan='10' align='center'>No slider found!</td>
                             </tr>
                     }
                 </tbody>
@@ -155,7 +155,7 @@ export default function DashboardMovieList() {
 
         <div className='flex justify-center items-center gap-5 mt-4'>
             <button  
-            onClick={()=>fetchMovies(currentPage - 1)}
+            onClick={()=>fetchSliders(currentPage - 1)}
             disabled={currentPage === 1}
             className='px-4 py-2 bg-yellow-300 text-black rounded-lg cursor-pointer disabled:cursor-not-allowed'>
                 Previous
@@ -164,7 +164,7 @@ export default function DashboardMovieList() {
                 {currentPage} of {totalPages}
             </span>
             <button  
-            onClick={()=>fetchMovies(currentPage + 1)}
+            onClick={()=>fetchSliders(currentPage + 1)}
             disabled={currentPage === totalPages}
             className='px-4 py-2 bg-yellow-300 text-black rounded-lg cursor-pointer disabled:cursor-not-allowed'>
                 Next

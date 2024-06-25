@@ -135,6 +135,18 @@ export default function DashboardSidebar() {
               <span className='font-medium cursor-pointer'>Movie Lists</span>
             </Sidebar.Item>
           }
+          {
+            currentUser.isAdmin && 
+            <Sidebar.Item className='font-medium cursor-pointer' as={Link} to={'/dashboard?tab=create-slider'} active={tab === 'create-slider'}  labelColor="light" icon={BiMovie}>
+              <span className='font-medium cursor-pointer'>Create Slider</span>
+            </Sidebar.Item>
+          }
+          {
+            currentUser.isAdmin && 
+            <Sidebar.Item className='font-medium cursor-pointer' as={Link} to={'/dashboard?tab=slider-list'} active={tab === 'slider-list'}  labelColor="light" icon={FaListUl}>
+              <span className='font-medium cursor-pointer'>Slider Lists</span>
+            </Sidebar.Item>
+          }
           <Sidebar.Item className='font-medium cursor-pointer' icon={FaTrashAlt} onClick={handleUserDelete}>
             <button  className='font-medium'>Delete Account</button>
           </Sidebar.Item>
