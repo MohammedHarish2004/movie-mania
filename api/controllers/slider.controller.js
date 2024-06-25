@@ -24,8 +24,7 @@ export const getSlider = async(req,res,next)=>{
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 2;
         const skip = ( page - 1 ) * limit
-
-        const sliders = await Slider.find({
+        const filter = {
             ...(req.query.sliderId && {_id:req.query.sliderId}),
             ...(req.query.searchTerm && {
                 $or: [
@@ -34,9 +33,11 @@ export const getSlider = async(req,res,next)=>{
                     { genre: { $regex: req.query.searchTerm, $options: 'i' } },
                 ]
             })
-        }).skip(skip).limit(limit)
+        }
+        
+        const sliders = await Slider.find(filter).skip(skip).limit(limit)
 
-        const totalSliders = await Slider.countDocuments()
+        const totalSliders = await Slider.countDocuments(filter)
 
         res.status(200).json({
             sliders,

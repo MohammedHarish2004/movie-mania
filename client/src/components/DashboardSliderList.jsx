@@ -14,7 +14,7 @@ export default function DashboardSliderList() {
     const [formData,setFormData] = useState({searchTerm:''})
     const [currentPage,setCurrentPage] = useState(1)
     const [totalPages,setTotalPages] = useState(1)
-    const [totalSliders,setTotalSliders] = useState()
+    const [totalSliders,setTotalSliders] = useState(0)
 
     const fetchSliders = async(page=1,searchTerm='')=>{
 
