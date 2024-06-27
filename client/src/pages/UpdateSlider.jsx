@@ -91,7 +91,7 @@ export default function CreateSlider() {
             const data = await res.json()
 
             if(res.ok){
-                setFormData(data[0])
+                setFormData(data.sliders[0])
             }
         }
         fetchSlider()

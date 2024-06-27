@@ -27,6 +27,7 @@ export const getMovie = async (req, res, next) => {
         const sort = req.query.order === 'asc' ? 1 : -1;
         const trending = req.query.trending !== undefined ? req.query.trending === 'true' : { $in: [false, true] };
         const newRelease = req.query.newRelease !== undefined ? req.query.newRelease === 'true' : { $in: [false,true] };
+        const random = req.query.random === 'true'; 
 
         const filter = {
             trending,
@@ -42,7 +43,16 @@ export const getMovie = async (req, res, next) => {
             })
         };
 
-        const movies = await Movie.find(filter).sort({ updatedAt: sort }).skip(skip).limit(limit);
+        let movies;
+
+        if (random) {
+            movies = await Movie.aggregate([
+                { $match: filter },
+                { $sample: { size: limit } } 
+            ]);
+        } else {
+            movies = await Movie.find(filter).sort({ updatedAt: sort }).skip(skip).limit(limit);
+        }
 
         const totalMovies = await Movie.countDocuments(filter);
 
@@ -56,6 +66,7 @@ export const getMovie = async (req, res, next) => {
         next(error);
     }
 };
+
 
 export const deleteMovie = async(req,res,next)=>{
     

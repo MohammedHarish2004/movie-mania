@@ -53,7 +53,7 @@ export default function MoviePage() {
                     }
                 }
             });
-
+ 
             return () => {
                 owl.trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
                 owl.find('.owl-stage-outer').children().unwrap();

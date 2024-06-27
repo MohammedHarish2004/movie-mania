@@ -61,4 +61,10 @@ tr:nth-child(even) {
   flex-direction: row; /* Ensure the carousel is always in a row layout */
   /* Add other necessary styles */
 }
-
+.owl-dots{
+  display: none;
+}
+.topic{
+  border-left: 4px solid rgb(250 202 21);
+  padding:0px 5px;
+}
