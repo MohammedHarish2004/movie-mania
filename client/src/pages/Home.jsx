@@ -4,6 +4,7 @@ import { FaPlay } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CallToAction from '../components/CallToAction';
+import { MdMovie } from 'react-icons/md';
 
 export default function Home() {
   const [slider, setSlider] = useState([]);
@@ -82,6 +83,14 @@ export default function Home() {
     fetchPopularSeries();
   }, []);
 
+  const destroyOwlCarousel = (selector) => {
+    const carousel = $(selector);
+    if (carousel.data('owl.carousel')) {
+      carousel.trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
+      carousel.find('.owl-stage-outer').children().unwrap();
+    }
+  };
+
   useEffect(() => {
     if (slider.length > 0) {
       const sliderCarousel = $('.slider-carousel').owlCarousel({
@@ -99,10 +108,7 @@ export default function Home() {
       });
 
       return () => {
-        if (sliderCarousel.data('owl.carousel')) {
-          sliderCarousel.trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-          sliderCarousel.find('.owl-stage-outer').children().unwrap();
-        }
+        destroyOwlCarousel('.slider-carousel');
       };
     }
   }, [slider]);
@@ -124,16 +130,13 @@ export default function Home() {
       });
 
       return () => {
-        if (sliderCarousel2.data('owl.carousel')) {
-          sliderCarousel2.trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-          sliderCarousel2.find('.owl-stage-outer').children().unwrap();
-        }
+        destroyOwlCarousel('.slider-carousel-2');
       };
     }
   }, [slider2]);
 
   useEffect(() => {
-    if (trending.length > 0 || newRelease.length > 0) {
+    if (trending.length > 0) {
       const trendingCarousel = $('.trending-carousel').owlCarousel({
         loop: true,
         autoplay: true,
@@ -141,7 +144,7 @@ export default function Home() {
         autoplayHoverPause: true,
         margin: 5,
         nav: false,
-        dots:false,
+        dots: false,
         responsive: {
           0: { items: 3 },
           600: { items: 4 },
@@ -150,15 +153,11 @@ export default function Home() {
       });
 
       return () => {
-        if (trendingCarousel.data('owl.carousel')) {
-          trendingCarousel.trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-          trendingCarousel.find('.owl-stage-outer').children().unwrap();
-        }
+        destroyOwlCarousel('.trending-carousel');
       };
     }
   }, [trending]);
 
-  
   useEffect(() => {
     if (newRelease.length > 0) {
       const newReleaseCarousel = $('.newRelease-carousel').owlCarousel({
@@ -168,7 +167,7 @@ export default function Home() {
         autoplayHoverPause: true,
         margin: 5,
         nav: false,
-        dots:false,
+        dots: false,
         responsive: {
           0: { items: 3 },
           600: { items: 4 },
@@ -177,10 +176,7 @@ export default function Home() {
       });
 
       return () => {
-        if (newReleaseCarousel.data('owl.carousel')) {
-          newReleaseCarousel.trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-          newReleaseCarousel.find('.owl-stage-outer').children().unwrap();
-        }
+        destroyOwlCarousel('.newRelease-carousel');
       };
     }
   }, [newRelease]);
@@ -194,7 +190,7 @@ export default function Home() {
         autoplayHoverPause: true,
         margin: 5,
         nav: false,
-        dots:false,
+        dots: false,
         responsive: {
           0: { items: 3 },
           600: { items: 4 },
@@ -203,14 +199,11 @@ export default function Home() {
       });
 
       return () => {
-        if (topMoviesCarousel.data('owl.carousel')) {
-          topMoviesCarousel.trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-          topMoviesCarousel.find('.owl-stage-outer').children().unwrap();
-        }
+        destroyOwlCarousel('.topMovies-carousel');
       };
     }
   }, [topMovies]);
- 
+
   useEffect(() => {
     if (epicAnimes.length > 0) {
       const epicAnimesCarousel = $('.epicAnime-carousel').owlCarousel({
@@ -220,7 +213,7 @@ export default function Home() {
         autoplayHoverPause: true,
         margin: 5,
         nav: false,
-        dots:false,
+        dots: false,
         responsive: {
           0: { items: 3 },
           600: { items: 4 },
@@ -229,10 +222,7 @@ export default function Home() {
       });
 
       return () => {
-        if (epicAnimesCarousel.data('owl.carousel')) {
-          epicAnimesCarousel.trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-          epicAnimesCarousel.find('.owl-stage-outer').children().unwrap();
-        }
+        destroyOwlCarousel('.epicAnime-carousel');
       };
     }
   }, [epicAnimes]);
@@ -246,7 +236,7 @@ export default function Home() {
         autoplayHoverPause: true,
         margin: 5,
         nav: false,
-        dots:false,
+        dots: false,
         responsive: {
           0: { items: 3 },
           600: { items: 4 },
@@ -255,10 +245,7 @@ export default function Home() {
       });
 
       return () => {
-        if (popularSeriesCarousel.data('owl.carousel')) {
-          popularSeriesCarousel.trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-          popularSeriesCarousel.find('.owl-stage-outer').children().unwrap();
-        }
+        destroyOwlCarousel('.popularSeries-carousel');
       };
     }
   }, [popularSeries]);
@@ -278,8 +265,8 @@ export default function Home() {
       <div className='slider-carousel owl-carousel z-30'>
         {slider.length > 0 ? slider.map((movie) => (
           <div className='item relative bg-black' key={movie._id}>
-            <img src={movie.image} alt="movie poster" className='w-full h-[200px] md:h-[400px] lg:h-[550px] object-fill' />
-            <div className='absolute inset-0 bg-black  backdrop-blur opacity-30'></div>
+            <img src={movie.image} alt="movie poster" className='w-full h-[200px] md:h-[400px] lg:h-[550px] object-cover' />
+            <div className='absolute inset-0 bg-gradient-to-r from-black via-black to-transparent w-[60%] opacity-80'></div>
             <div className='flex flex-col gap-0.5 absolute bottom-[2%] p-4 z-10'>
               <h1 className='text-base sm:text-3xl lg:text-5xl font-medium truncate capitalize text-white'>{movie.name} | {movie.theme}</h1>
               <div className='text-xs lg:text-xl line-clamp-3 flex gap-2 text-gray-300 font-medium truncate mt-0 md:mt-2'>
@@ -288,7 +275,7 @@ export default function Home() {
                 <span>{movie.age}+</span>
                 <span>{movie.theme ==='movie' ? movie.duration + 'mins' : movie.duration + '+'}</span>
               </div>
-              <div className='text-xs w-52 sm:w-80 lg:w-full lg:max-w-3xl lg:text-xl text-gray-300 font-medium truncate text-wrap line-clamp-2 lg:line-clamp-2'>
+              <div className='text-xs hidden sm:inline sm:w-80 lg:w-full lg:max-w-2xl lg:text-xl text-gray-300 font-medium truncate text-wrap lg:line-clamp-3'>
                 <span>{movie.description}</span>
               </div>
               <Link to={`/view?movieUrl=${encodeURIComponent(movie.url)}`}  className='w-20 md:w-52 border-2 border-yellow-300 hover:bg-yellow-300 hover:text-black font-bold text-white p-1 lg:p-2 rounded-lg transition delay-50 mt-3 uppercase flex gap-2 items-center justify-center px-1 lg:px-4 text-xs sm:text-base'>
@@ -308,11 +295,7 @@ export default function Home() {
               <img src={movie.image} alt="movie poster" className='h-[150px] md:h-[220px] lg:h-[300px] transform transition-transform duration-300 ease-in-out hover:scale-105' />
               <div className='bg-black p-2'>
                 <h1 className='font-medium truncate'>{movie.name} | {movie.theme}</h1>
-                <div className='flex gap-2 text-gray-500 text-sm font-medium truncate'>
-                  <span>IMdb {movie.rating ? movie.rating : '7.5'}</span>
-                  <span>{movie.year}</span>
-                  <span>{movie.age}+</span>
-                </div>
+                <h1 className="flex gap-1 items-center capitalize font-semibold text-sm truncate md:text-base"><MdMovie /><span>{movie.genre}</span></h1>
               </div>
             </Link>
           </div>
@@ -329,11 +312,7 @@ export default function Home() {
               <img src={movie.image} alt="movie poster" className='h-[150px] md:h-[220px] lg:h-[300px] transform transition-transform duration-300 ease-in-out hover:scale-105' />
               <div className='bg-black p-2'>
                 <h1 className='font-medium truncate'>{movie.name} | {movie.theme}</h1>
-                <div className='flex gap-2 text-gray-500 text-sm font-medium truncate'>
-                  <span>IMdb {movie.rating ? movie.rating : '7.5'}</span>
-                  <span>{movie.year}</span>
-                  <span>{movie.age}+</span>
-                </div>
+                <h1 className="flex gap-1 items-center capitalize font-semibold text-sm truncate md:text-base"><MdMovie /><span>{movie.genre}</span></h1>
               </div>
             </Link>
           </div>
@@ -350,11 +329,7 @@ export default function Home() {
               <img src={movie.image} alt="movie poster" className='h-[150px] md:h-[220px] lg:h-[300px] transform transition-transform duration-300 ease-in-out hover:scale-105' />
               <div className='bg-black p-2'>
                 <h1 className='font-medium truncate'>{movie.name} | {movie.theme}</h1>
-                <div className='flex gap-2 text-gray-500 text-sm font-medium truncate'>
-                  <span>IMdb {movie.rating ? movie.rating : '7.5'}</span>
-                  <span>{movie.year}</span>
-                  <span>{movie.age}+</span>
-                </div>
+                <h1 className="flex gap-1 items-center capitalize font-semibold text-sm truncate md:text-base"><MdMovie /><span>{movie.genre}</span></h1>
               </div>
             </Link>
           </div>
@@ -366,8 +341,8 @@ export default function Home() {
       <div className='slider-carousel-2 owl-carousel z-30'>
         {slider2.length > 0 ? slider2.map((movie) => (
           <div className='item relative bg-black' key={movie._id}>
-            <img src={movie.image} alt="movie poster" className='w-full h-[200px] md:h-[400px] lg:h-[550px] object-fill' />
-            <div className='absolute inset-0 bg-black  backdrop-blur opacity-30'></div>
+            <img src={movie.image} alt="movie poster" className='w-full h-[200px] md:h-[400px] lg:h-[550px] object-cover' />
+            <div className='absolute inset-0 bg-gradient-to-r from-black via-black to-transparent w-[60%] opacity-80'></div>
             <div className='flex flex-col gap-0.5 absolute bottom-[2%] p-4 z-10'>
               <h1 className='text-base sm:text-3xl lg:text-5xl font-medium truncate capitalize text-white'>{movie.name} | {movie.theme}</h1>
               <div className='text-xs lg:text-xl line-clamp-3 flex gap-2 text-gray-300 font-medium truncate mt-0 md:mt-2'>
@@ -376,7 +351,7 @@ export default function Home() {
                 <span>{movie.age}+</span>
                 <span>{movie.theme ==='movie' ? movie.duration + 'mins' : movie.duration + '+'}</span>
               </div>
-              <div className='text-xs w-52 sm:w-80 lg:w-full lg:max-w-3xl lg:text-xl text-gray-300 font-medium truncate text-wrap line-clamp-2 lg:line-clamp-2'>
+              <div className='text-xs hidden sm:inline sm:w-80 lg:w-full lg:max-w-2xl lg:text-xl text-gray-300 font-medium truncate text-wrap lg:line-clamp-3'>
                 <span>{movie.description}</span>
               </div>
               <Link to={`/view?movieUrl=${encodeURIComponent(movie.url)}`}  className='w-20 md:w-52 border-2 border-yellow-300 hover:bg-yellow-300 hover:text-black font-bold text-white p-1 lg:p-2 rounded-lg transition delay-50 mt-3 uppercase flex gap-2 items-center justify-center px-1 lg:px-4 text-xs sm:text-base'>
@@ -397,11 +372,7 @@ export default function Home() {
               <img src={movie.image} alt="movie poster" className='h-[150px] md:h-[220px] lg:h-[300px] transform transition-transform duration-300 ease-in-out hover:scale-105' />
               <div className='bg-black p-2'>
                 <h1 className='font-medium truncate'>{movie.name} | {movie.theme}</h1>
-                <div className='flex gap-2 text-gray-500 text-sm font-medium truncate'>
-                  <span>IMdb {movie.rating ? movie.rating : '7.5'}</span>
-                  <span>{movie.year}</span>
-                  <span>{movie.age}+</span>
-                </div>
+                <h1 className="flex gap-1 items-center capitalize font-semibold text-sm truncate md:text-base"><MdMovie /><span>{movie.genre}</span></h1>
               </div>
             </Link>
           </div>
@@ -418,11 +389,7 @@ export default function Home() {
               <img src={movie.image} alt="movie poster" className='h-[150px] md:h-[220px] lg:h-[300px] transform transition-transform duration-300 ease-in-out hover:scale-105' />
               <div className='bg-black p-2'>
                 <h1 className='font-medium truncate'>{movie.name} | {movie.theme}</h1>
-                <div className='flex gap-2 text-gray-500 text-sm font-medium truncate'>
-                  <span>IMdb {movie.rating ? movie.rating : '7.5'}</span>
-                  <span>{movie.year}</span>
-                  <span>{movie.age}+</span>
-                </div>
+                <h1 className="flex gap-1 items-center capitalize font-semibold text-sm truncate md:text-base"><MdMovie /><span>{movie.genre}</span></h1>
               </div>
             </Link>
           </div>
