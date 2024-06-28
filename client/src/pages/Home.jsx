@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { FaPlay } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import CallToAction from '../components/CallToAction';
 
 export default function Home() {
   const [slider, setSlider] = useState([]);
+  const [slider2, setSlider2] = useState([]);
   const [trending, setTrending] = useState([]);
   const [newRelease, setNewRelease] = useState([]);
   const [topMovies, setTopMovies] = useState([]);
@@ -16,9 +18,17 @@ export default function Home() {
 
   const fetchMovies = async () => {
     setLoading(true);
-    const res = await fetch(`/api/slider/getSlider`);
+    const res = await fetch(`/api/slider/getSlider?random=true&limit=5`);
     const data = await res.json();
     setSlider(data.sliders);
+    setLoading(false);
+  };
+
+  const fetchMovies2 = async () => {
+    setLoading(true);
+    const res = await fetch(`/api/slider/getSlider?random=true&limit=5&page=2`);
+    const data = await res.json();
+    setSlider2(data.sliders);
     setLoading(false);
   };
 
@@ -64,6 +74,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchMovies();
+    fetchMovies2();
     fetchTrending();
     fetchNewRelease();
     fetchTopMovies();
@@ -77,7 +88,7 @@ export default function Home() {
         loop: true,
         autoplay: true,
         autoplayTimeout: 3000,
-        autoplayHoverPause: false,
+        autoplayHoverPause: true,
         margin: 5,
         nav: false,
         responsive: {
@@ -95,6 +106,31 @@ export default function Home() {
       };
     }
   }, [slider]);
+
+  useEffect(() => {
+    if (slider2.length > 0) {
+      const sliderCarousel2 = $('.slider-carousel-2').owlCarousel({
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        margin: 5,
+        nav: false,
+        responsive: {
+          0: { items: 1 },
+          600: { items: 1 },
+          1000: { items: 1 },
+        },
+      });
+
+      return () => {
+        if (sliderCarousel2.data('owl.carousel')) {
+          sliderCarousel2.trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
+          sliderCarousel2.find('.owl-stage-outer').children().unwrap();
+        }
+      };
+    }
+  }, [slider2]);
 
   useEffect(() => {
     if (trending.length > 0 || newRelease.length > 0) {
@@ -242,14 +278,15 @@ export default function Home() {
       <div className='slider-carousel owl-carousel z-30'>
         {slider.length > 0 ? slider.map((movie) => (
           <div className='item relative bg-black' key={movie._id}>
-            <img src={movie.image} alt="movie poster" className='w-full h-[200px] md:h-[400px] lg:h-[500px] object-cover' />
-            <div className='absolute inset-0 bg-black opacity-50'></div>
+            <img src={movie.image} alt="movie poster" className='w-full h-[200px] md:h-[400px] lg:h-[550px] object-fill' />
+            <div className='absolute inset-0 bg-black  backdrop-blur opacity-30'></div>
             <div className='flex flex-col gap-0.5 absolute bottom-[2%] p-4 z-10'>
               <h1 className='text-base sm:text-3xl lg:text-5xl font-medium truncate capitalize text-white'>{movie.name} | {movie.theme}</h1>
               <div className='text-xs lg:text-xl line-clamp-3 flex gap-2 text-gray-300 font-medium truncate mt-0 md:mt-2'>
                 <span>IMdb {movie.rating ? movie.rating : '7.5'}</span>
                 <span>{movie.year}</span>
                 <span>{movie.age}+</span>
+                <span>{movie.theme ==='movie' ? movie.duration + 'mins' : movie.duration + '+'}</span>
               </div>
               <div className='text-xs w-52 sm:w-80 lg:w-full lg:max-w-3xl lg:text-xl text-gray-300 font-medium truncate text-wrap line-clamp-2 lg:line-clamp-2'>
                 <span>{movie.description}</span>
@@ -325,6 +362,32 @@ export default function Home() {
       </div>
       {/* Top movies End */}
 
+      {/* Slider */}
+      <div className='slider-carousel-2 owl-carousel z-30'>
+        {slider2.length > 0 ? slider2.map((movie) => (
+          <div className='item relative bg-black' key={movie._id}>
+            <img src={movie.image} alt="movie poster" className='w-full h-[200px] md:h-[400px] lg:h-[550px] object-fill' />
+            <div className='absolute inset-0 bg-black  backdrop-blur opacity-30'></div>
+            <div className='flex flex-col gap-0.5 absolute bottom-[2%] p-4 z-10'>
+              <h1 className='text-base sm:text-3xl lg:text-5xl font-medium truncate capitalize text-white'>{movie.name} | {movie.theme}</h1>
+              <div className='text-xs lg:text-xl line-clamp-3 flex gap-2 text-gray-300 font-medium truncate mt-0 md:mt-2'>
+                <span>IMdb {movie.rating ? movie.rating : '7.5'}</span>
+                <span>{movie.year}</span>
+                <span>{movie.age}+</span>
+                <span>{movie.theme ==='movie' ? movie.duration + 'mins' : movie.duration + '+'}</span>
+              </div>
+              <div className='text-xs w-52 sm:w-80 lg:w-full lg:max-w-3xl lg:text-xl text-gray-300 font-medium truncate text-wrap line-clamp-2 lg:line-clamp-2'>
+                <span>{movie.description}</span>
+              </div>
+              <Link to={`/view?movieUrl=${encodeURIComponent(movie.url)}`}  className='w-20 md:w-52 border-2 border-yellow-300 hover:bg-yellow-300 hover:text-black font-bold text-white p-1 lg:p-2 rounded-lg transition delay-50 mt-3 uppercase flex gap-2 items-center justify-center px-1 lg:px-4 text-xs sm:text-base'>
+                Play <FaPlay className='w-2 h-2 sm:w-3 sm:h-3' />
+              </Link>
+            </div>
+          </div>
+        )) : <span>No movies available</span>}
+      </div>
+      {/* Slider end */}
+
       {/* Popular series */}
       <h1 className='text-xl md:text-3xl my-5 ms-1 topic'>Popular Series</h1>
       <div className='popularSeries-carousel owl-carousel'>
@@ -366,6 +429,9 @@ export default function Home() {
         )) : <span>No movies available</span>}
       </div>
       {/* New Released movies End */}
+
+      {/* Notice */}
+      <CallToAction />
     </div>
   );
 }

@@ -68,3 +68,18 @@ tr:nth-child(even) {
   border-left: 4px solid rgb(250 202 21);
   padding:0px 5px;
 }
+
+*::selection{
+background-color: black !important;
+color:rgb(250 202 21) !important;
+}
+
+::-webkit-scrollbar
+{
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb{
+    background: linear-gradient(rgb(255, 208, 0) ,rgb(250 202 21) ) ;
+    border-radius: 3px;
+}

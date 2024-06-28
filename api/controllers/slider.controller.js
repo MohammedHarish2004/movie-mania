@@ -22,8 +22,11 @@ export const getSlider = async(req,res,next)=>{
 
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 2;
+        const limit = parseInt(req.query.limit) || 10;
         const skip = ( page - 1 ) * limit
+        const random = req.query.random === 'true'
+        const sort = req.query.order === 'asc' ? 1 : -1
+
         const filter = {
             ...(req.query.sliderId && {_id:req.query.sliderId}),
             ...(req.query.searchTerm && {
@@ -34,8 +37,22 @@ export const getSlider = async(req,res,next)=>{
                 ]
             })
         }
+
+        let sliders;
+
+        if(random){
+             sliders = await Slider.aggregate([
+                {$match:filter},
+                {$sort:{updatedAt:sort}},
+                {$skip: parseInt(skip)},
+                {$limit:parseInt(limit)}
+            ])
+        }
+
+        else{
+             sliders = await Slider.find(filter).sort({updatedAt:sort}).skip(skip).limit(limit)
+        }
         
-        const sliders = await Slider.find(filter).skip(skip).limit(limit)
 
         const totalSliders = await Slider.countDocuments(filter)
 

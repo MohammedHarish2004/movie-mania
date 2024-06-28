@@ -67,8 +67,8 @@ export default function Header() {
       })
     }
   return (
-    <Navbar  className="bg-black p-3 border-b border-slate-700 sticky top-0 z-10">
-      <Navbar.Brand>
+    <Navbar  className="bg-black p-3 border-b border-slate-700 sticky top-0 z-40">
+      <Navbar.Brand as={Link} to='/'>
         <h1 className="flex gap-1 ms-0 sm:ms-5">
             <span className="flex  items-center gap-0.5 bg-gradient-to-r from-yellow-300 to-yellow-400 hover:bg-gradient-to-bl p-1 px-2 rounded-lg text-lg sm:text-xl font-bold text-black"><PiFilmReelFill />Movie</span>
             <span className="self-center whitespace-nowrap text-lg sm:text-xl font-semibold dark:text-white">Mania</span>
@@ -84,7 +84,7 @@ export default function Header() {
        {
         currentUser ?
         (
-        <Dropdown inline arrowIcon={false} label={<Avatar img={avatar}/>} className="bg-gray-800 hover:text-black p-1 z-20 ">
+        <Dropdown inline arrowIcon={false} label={<Avatar img={avatar}/>} className="bg-gray-800 hover:text-black p-1 z-50 ">
           <Dropdown.Header className="text-white font-medium">
             User : {currentUser.username}
           </Dropdown.Header>

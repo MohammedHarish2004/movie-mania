@@ -63,15 +63,13 @@ export default function FooterCom() {
       </div>
       <Footer.Divider />
       <div className='w-full sm:flex sm:items-center sm:justify-between'>
-        <Footer.Copyright
+        <Footer.Copyright 
           className='text-gray-400'
           by="Movie Mania"
           year={new Date().getFullYear()}
         />
         <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center">
-          <Footer.Icon href='' target='_blank' icon={BsFacebook} className='hover:text-yellow-400' />
-          <Footer.Icon href='' target='_blank' icon={BsInstagram} className='hover:text-yellow-400' />
-          <Footer.Icon href='' target='_blank' icon={BsYoutube} className='hover:text-yellow-400' />
+          <Footer.Icon href='https://www.youtube.com/@JokerPandaaOfficial/featured' target='_blank' icon={BsYoutube} className='text-white hover:text-yellow-400' />
           <Footer.Icon href='https://github.com/MohammedHarish2004' target='_blank' icon={BsGithub} className='text-white hover:text-yellow-300' />
         </div>
       </div>

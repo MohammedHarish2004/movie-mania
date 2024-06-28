@@ -18,7 +18,7 @@ export default function DashboardSliderList() {
 
     const fetchSliders = async(page=1,searchTerm='')=>{
 
-        const res = await fetch(`/api/slider/getSlider?limit=8&page=${page}&searchTerm=${searchTerm}`)
+        const res = await fetch(`/api/slider/getSlider?limit=5&page=${page}&searchTerm=${searchTerm}`)
         const data = await res.json()
         setSliders(
             data.sliders,
