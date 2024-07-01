@@ -81,11 +81,11 @@ export default function SignIn() {
         <form className='flex flex-col gap-3' onSubmit={handleSubmit}>
          <div>
             <Label className='text-white text-base'>Username</Label>
-            <input placeholder='username' id='username' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300' onChange={handleChange}/>
+            <input placeholder='username' id='username' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300' onChange={handleChange} autoComplete='off'/>
          </div>
          <div>
             <Label className='text-white text-base'>Password</Label>
-            <input  placeholder='password' id='password' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300' onChange={handleChange}/>
+            <input type='password'  placeholder='password' id='password' className='bg-transparent block p-2 rounded-lg w-full outline-none border border-yellow-300' onChange={handleChange} autoComplete='off'/>
          </div>
          <button disabled={loading} className=' bg-yellow-300 hover:bg-yellow-300 text-black p-2 rounded-lg font-bold transition delay-50 hover:opacity-85 mt-3 disabled:opacity-80 uppercase' >{
           loading ? <span><Spinner size='sm' color='gray'/> Loading</span> : 'Login'

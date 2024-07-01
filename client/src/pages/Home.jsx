@@ -19,7 +19,7 @@ export default function Home() {
 
   const fetchMovies = async () => {
     setLoading(true);
-    const res = await fetch(`/api/slider/getSlider?random=true&limit=5`);
+    const res = await fetch(`/api/slider/getSlider?random=true&limit=6`);
     const data = await res.json();
     setSlider(data.sliders);
     setLoading(false);
@@ -27,7 +27,7 @@ export default function Home() {
 
   const fetchMovies2 = async () => {
     setLoading(true);
-    const res = await fetch(`/api/slider/getSlider?random=true&limit=5&page=2`);
+    const res = await fetch(`/api/slider/getSlider?random=true&limit=6&page=2`);
     const data = await res.json();
     setSlider2(data.sliders);
     setLoading(false);
